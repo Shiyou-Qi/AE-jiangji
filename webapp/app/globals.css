@@ -84,6 +84,43 @@ body {
 }
 
 /* ============ 背景装饰 ============ */
+.home-shell {
+  background:
+    radial-gradient(circle at 50% -20%, rgba(91, 141, 255, 0.2), transparent 42%),
+    linear-gradient(180deg, #060713 0%, #05060a 56%, #030409 100%);
+}
+
+.premium-mesh {
+  background-image:
+    linear-gradient(110deg, transparent 0%, rgba(125, 145, 255, 0.07) 34%, transparent 68%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 36%);
+  opacity: 0.9;
+}
+
+.radar-sweep {
+  border-radius: 9999px;
+  background:
+    conic-gradient(
+      from 185deg,
+      transparent 0deg,
+      rgba(98, 210, 255, 0.11) 34deg,
+      transparent 76deg,
+      transparent 360deg
+    ),
+    radial-gradient(circle, transparent 0 38%, rgba(99, 102, 241, 0.12) 39%, transparent 40% 100%);
+  filter: blur(1px);
+  mask-image: radial-gradient(circle, black 0%, transparent 68%);
+  -webkit-mask-image: radial-gradient(circle, black 0%, transparent 68%);
+  animation: radarSpin 18s linear infinite;
+  opacity: 0.78;
+}
+
+@keyframes radarSpin {
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
 .bg-grid {
   background-image:
     linear-gradient(rgba(140, 160, 255, 0.045) 1px, transparent 1px),
@@ -171,6 +208,154 @@ body {
   100% {
     background-position: 220% 50%;
   }
+}
+
+/* ============ 首页产品界面 ============ */
+.top-console {
+  box-shadow:
+    0 24px 70px -48px rgba(105, 135, 255, 0.9),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+.brand-core {
+  background:
+    linear-gradient(135deg, rgba(84, 124, 255, 0.95), rgba(168, 85, 247, 0.9)),
+    #1b1f35;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.16) inset,
+    0 14px 34px -12px rgba(99, 102, 241, 0.9),
+    0 0 38px -12px rgba(34, 211, 238, 0.8);
+}
+
+.command-card {
+  box-shadow:
+    0 40px 120px -55px rgba(99, 102, 241, 0.95),
+    0 24px 70px -60px rgba(255, 255, 255, 0.65),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+.command-card::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.08), transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 36%);
+  pointer-events: none;
+}
+
+.command-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-enter {
+  animation: homeEnter 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes homeEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.metric-tile {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
+    rgba(9, 12, 23, 0.52);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 42px -30px rgba(99, 102, 241, 0.65);
+}
+
+.engine-console {
+  box-shadow:
+    0 32px 90px -55px rgba(34, 211, 238, 0.85),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+.console-screen {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(3, 8, 18, 0.76), rgba(9, 11, 22, 0.72)),
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.035) 0,
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px,
+      transparent 7px
+    );
+  border: 1px solid rgba(125, 211, 252, 0.12);
+}
+
+.console-screen::before {
+  content: '';
+  position: absolute;
+  inset: -60% -20%;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.09), transparent);
+  transform: rotate(18deg);
+  animation: consoleSweep 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes consoleSweep {
+  0%,
+  100% {
+    translate: -35% 0;
+    opacity: 0;
+  }
+  45%,
+  60% {
+    opacity: 1;
+  }
+  100% {
+    translate: 35% 0;
+  }
+}
+
+.pulse-core {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(103, 232, 249, 0.35), transparent 58%),
+    linear-gradient(145deg, rgba(34, 211, 238, 0.18), rgba(99, 102, 241, 0.2));
+  border: 1px solid rgba(125, 211, 252, 0.24);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 0 34px -8px rgba(34, 211, 238, 0.82);
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #34d399, #22d3ee 45%, #818cf8 78%, #f0abfc);
+  box-shadow: 0 0 22px rgba(34, 211, 238, 0.7);
+  transition: width 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-index {
+  background:
+    linear-gradient(145deg, rgba(34, 211, 238, 0.22), rgba(99, 102, 241, 0.18)),
+    rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 10px 28px -16px rgba(34, 211, 238, 0.8);
+}
+
+.premium-feature {
+  box-shadow:
+    0 18px 52px -38px rgba(99, 102, 241, 0.7),
+    0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+.premium-feature:hover {
+  box-shadow:
+    0 24px 70px -42px rgba(99, 102, 241, 0.95),
+    0 0 28px -16px rgba(34, 211, 238, 0.75),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
 }
 
 /* ============ 流光 / 动画边框 ============ */

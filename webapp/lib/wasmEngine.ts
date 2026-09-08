@@ -106,6 +106,13 @@ export async function convertBytes(
     sourceMajor: result.sourceMajor,
     targetMajor: result.targetMajor,
     changes: result.changes,
-    detail: result.detail,
+    // wasm 返回的 detail 可能是 string[]，也可能是单个 string / undefined，统一归一化为数组
+    detail: normalizeDetail(result.detail),
   };
+}
+
+function normalizeDetail(detail: unknown): string[] {
+  if (detail === undefined || detail === null) return [];
+  if (Array.isArray(detail)) return detail.map((d) => String(d));
+  return [String(detail)];
 }

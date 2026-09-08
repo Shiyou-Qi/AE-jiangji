@@ -1,91 +1,72 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+const siteUrl = 'https://aejiangji.vercel.app';
 const outDir = join(process.cwd(), 'out');
-
-const pages = [
-  {
-    file: 'index.html',
-    mustContain: [
-      '<title>AE 工程降级工具',
-      '<meta name="description"',
-      '<link rel="canonical"',
-      '在线 AEP 降级工具',
-      'application/ld+json',
-    ],
-  },
-  {
-    file: join('en', 'index.html'),
-    mustContain: [
-      '<title>AEP Downgrader',
-      '<meta name="description"',
-      '<link rel="canonical"',
-      'Free online AEP downgrader',
-      'application/ld+json',
-    ],
-  },
-  {
-    file: join('aep-jiangji', 'index.html'),
-    mustContain: ['<title>AEP 降级工具', '<meta name="description"', 'AEP 降级工具'],
-  },
-  {
-    file: join('ae-gongcheng-jiangji', 'index.html'),
-    mustContain: ['<title>AE 工程降级', '<meta name="description"', 'AE 工程降级'],
-  },
-  {
-    file: join('after-effects-di-banben-dakai', 'index.html'),
-    mustContain: ['<title>After Effects 低版本打开', '<meta name="description"', 'After Effects 低版本打开'],
-  },
-  {
-    file: join('en', 'aep-downgrader', 'index.html'),
-    mustContain: ['<title>AEP Downgrader', '<meta name="description"', 'AEP Downgrader'],
-  },
-  {
-    file: join('en', 'downgrade-after-effects-project', 'index.html'),
-    mustContain: ['<title>Downgrade After Effects Project', '<meta name="description"', 'Downgrade After Effects Project'],
-  },
-  {
-    file: join('en', 'open-aep-in-older-version', 'index.html'),
-    mustContain: ['<title>Open AEP in Older Version', '<meta name="description"', 'Open AEP in Older Version'],
-  },
-];
-
-const requiredFiles = ['sitemap.xml', 'robots.txt'];
 const failures = [];
 
-for (const file of requiredFiles) {
+function readOutFile(file) {
   const fullPath = join(outDir, file);
-  if (!existsSync(fullPath)) failures.push(`Missing ${file}`);
-}
-
-for (const page of pages) {
-  const fullPath = join(outDir, page.file);
   if (!existsSync(fullPath)) {
-    failures.push(`Missing ${page.file}`);
-    continue;
+    failures.push(`Missing ${file}`);
+    return '';
   }
-
-  const html = readFileSync(fullPath, 'utf8');
-  for (const needle of page.mustContain) {
-    if (!html.includes(needle)) failures.push(`${page.file} missing ${needle}`);
-  }
+  return readFileSync(fullPath, 'utf8');
 }
 
-if (existsSync(join(outDir, 'sitemap.xml'))) {
-  const sitemap = readFileSync(join(outDir, 'sitemap.xml'), 'utf8');
-  const expectedUrls = [
-    'https://aejiangji.vercel.app/',
-    'https://aejiangji.vercel.app/en/',
-    'https://aejiangji.vercel.app/aep-jiangji/',
-    'https://aejiangji.vercel.app/ae-gongcheng-jiangji/',
-    'https://aejiangji.vercel.app/after-effects-di-banben-dakai/',
-    'https://aejiangji.vercel.app/en/aep-downgrader/',
-    'https://aejiangji.vercel.app/en/downgrade-after-effects-project/',
-    'https://aejiangji.vercel.app/en/open-aep-in-older-version/',
+function htmlFileForUrl(url) {
+  const path = new URL(url).pathname;
+  if (path === '/') return 'index.html';
+  return join(path.replace(/^\/|\/$/g, ''), 'index.html');
+}
+
+const sitemap = readOutFile('sitemap.xml');
+const robots = readOutFile('robots.txt');
+
+if (!robots.includes(`Sitemap: ${siteUrl}/sitemap.xml`)) {
+  failures.push('robots.txt missing Sitemap directive');
+}
+
+const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
+const uniqueUrls = new Set(urls);
+
+if (urls.length !== uniqueUrls.size) failures.push('sitemap.xml contains duplicate URLs');
+if (urls.length < 29) failures.push(`sitemap.xml should contain at least 29 URLs, found ${urls.length}`);
+
+const requiredUrls = [
+  `${siteUrl}/`,
+  `${siteUrl}/en/`,
+  `${siteUrl}/aep-jiangji/`,
+  `${siteUrl}/ae-2026-to-2024/`,
+  `${siteUrl}/aep-file-cannot-open/`,
+  `${siteUrl}/en/aep-downgrader/`,
+  `${siteUrl}/en/ae-2026-to-2024/`,
+  `${siteUrl}/en/aep-downgrade-without-upload/`,
+];
+
+for (const url of requiredUrls) {
+  if (!uniqueUrls.has(url)) failures.push(`sitemap.xml missing ${url}`);
+}
+
+for (const url of urls) {
+  const file = htmlFileForUrl(url);
+  const html = readOutFile(file);
+  if (!html) continue;
+
+  const checks = [
+    ['title', /<title>[^<]{8,}<\/title>/],
+    ['description', /<meta name="description" content="[^"]{40,}"/],
+    ['canonical', /<link rel="canonical" href="https:\/\/aejiangji\.vercel\.app\//],
+    ['index robots', /<meta name="robots" content="index, follow"/],
+    ['body heading', /<h1[^>]*>/],
   ];
 
-  for (const url of expectedUrls) {
-    if (!sitemap.includes(`<loc>${url}</loc>`)) failures.push(`sitemap.xml missing ${url}`);
+  for (const [label, pattern] of checks) {
+    if (!pattern.test(html)) failures.push(`${file} missing ${label}`);
+  }
+
+  if (!html.includes('application/ld+json')) {
+    failures.push(`${file} missing structured data`);
   }
 }
 
@@ -95,4 +76,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('SEO verification passed.');
+console.log(`SEO verification passed for ${urls.length} URLs.`);
