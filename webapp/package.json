@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "next dev -p 8780",
     "build": "next build",
+    "postbuild": "node scripts/verify-seo.mjs",
+    "seo:check": "node scripts/verify-seo.mjs",
     "start": "next start -p 8780",
     "lint": "next lint"
   },

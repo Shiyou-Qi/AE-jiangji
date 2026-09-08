@@ -1,4 +1,5 @@
 import { getDict, type Locale } from '@/lib/i18n';
+import { getLandingPages, landingPath } from '@/lib/landingPages';
 
 // 目标版本清单（与 wasm 引擎 targets_json 一致，静态渲染利于收录）
 const VERSIONS = [
@@ -19,6 +20,7 @@ const VERSIONS = [
  */
 export default function SeoContent({ locale }: { locale: Locale }) {
   const t = getDict(locale);
+  const landingLinks = getLandingPages(locale);
 
   return (
     <section className="mt-16 space-y-12">
@@ -99,6 +101,23 @@ export default function SeoContent({ locale }: { locale: Locale }) {
           ))}
         </div>
       </section>
+
+      <nav className="glass rounded-2xl px-6 py-5" aria-label={locale === 'zh' ? '相关搜索入口' : 'Related search pages'}>
+        <h2 className="text-lg font-bold tracking-tight text-white">
+          {locale === 'zh' ? '相关搜索入口' : 'Related Search Pages'}
+        </h2>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {landingLinks.map((page) => (
+            <a
+              className="rounded-full border border-white/[0.1] bg-white/[0.04] px-3 py-1.5 text-[12px] font-semibold text-[#c3c9e2] transition hover:border-indigo-300/40 hover:text-white"
+              href={landingPath(page)}
+              key={page.slug}
+            >
+              {page.h1}
+            </a>
+          ))}
+        </div>
+      </nav>
 
       {/* ===== Footer ===== */}
       <footer className="border-t border-white/[0.07] pt-6 text-center">
