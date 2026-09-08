@@ -186,11 +186,11 @@ export default function Tool({
         outName: res.name,
       });
     } catch (e) {
-      setResult({ ok: false, message: friendlyError(e) });
+      setResult({ ok: false, message: friendlyError(e, locale) });
     } finally {
       setConverting(false);
     }
-  }, [file, selectedMajor, t.genDonePrefix]);
+  }, [file, selectedMajor, t.genDonePrefix, locale]);
 
   const sourceIsValid =
     file?.sourceMajor !== null && file?.sourceMajor !== undefined;
