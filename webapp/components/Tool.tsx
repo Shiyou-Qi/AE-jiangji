@@ -190,17 +190,6 @@ export default function Tool({
 
   const sourceIsValid =
     file?.sourceMajor !== null && file?.sourceMajor !== undefined;
-  const completedSteps = result?.ok
-    ? 3
-    : selectedMajor !== null
-    ? 2
-    : file
-    ? 1
-    : 0;
-  const progress = Math.round((completedSteps / 3) * 100);
-  const sourceLabel = file?.label || (locale === 'zh' ? '待识别' : 'Pending');
-  const targetLabel =
-    selectedMajor !== null ? `AE ${selectedMajor}` : locale === 'zh' ? '待选择' : 'Select target';
 
   return (
     <main
@@ -222,9 +211,8 @@ export default function Tool({
       <ParticleField />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center px-5 pb-16 pt-7 sm:px-8 lg:pt-10">
-        <div
-          className="home-enter w-full max-w-[1180px]"
-        >
+        <div className="home-enter w-full max-w-[1080px]">
+          {/* ===== 顶部导航 ===== */}
           <nav className="top-console glass flex items-center justify-between gap-4 rounded-2xl px-4 py-3">
             <div className="flex min-w-0 items-center gap-3">
               <div className="brand-core flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white">
@@ -236,400 +224,427 @@ export default function Tool({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="hidden rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1.5 text-[11px] font-semibold text-emerald-200 sm:inline-flex">
-                {locale === 'zh' ? '本地引擎在线' : 'Local engine online'}
-              </span>
               <LangSwitch locale={locale} />
             </div>
           </nav>
 
-          <section className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-            <div className="command-card glass-strong flow-border rounded-[28px] p-4 sm:p-6">
-              <div className="mb-7 flex flex-wrap items-center justify-between gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full border border-indigo-300/20 bg-indigo-300/10 px-3.5 py-1.5 text-[11px] font-semibold text-[#bfc9ff]">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-300 opacity-70" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan-200" />
-                  </span>
-                  {locale === 'zh' ? 'AEP STRUCTURE CONVERTER' : 'AEP STRUCTURE CONVERTER'}
+          {/* ===== 步骤进度条（替代侧栏控制台） ===== */}
+          <ProgressStepper
+            engineReady={engineReady}
+            fileReady={!!file}
+            targetReady={selectedMajor !== null}
+            resultOk={result?.ok ?? false}
+            locale={locale}
+          />
+
+          {/* ===== Hero ===== */}
+          <header className="mt-6 flex flex-col gap-5 sm:mt-8 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+            <div className="min-w-0 flex-1">
+              <span className="inline-flex items-center gap-2 rounded-full border border-indigo-300/20 bg-indigo-300/10 px-3.5 py-1.5 text-[11px] font-semibold text-[#bfc9ff]">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-300 opacity-70" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan-200" />
                 </span>
-                <div className="flex items-center gap-2 text-[11px] font-semibold text-[#8b93a8]">
-                  <Icon d={I.lock} className="h-3.5 w-3.5 text-emerald-300" />
-                  <span>{locale === 'zh' ? '文件不上传' : 'No upload'}</span>
-                </div>
-              </div>
-
-              {/* ===== 主标题 ===== */}
-              <header>
-                <h1 className="max-w-[680px] text-[42px] font-black leading-[1.04] text-white sm:text-[60px]">
-                  <span className="text-gradient text-glow">{t.heroTitle1}</span>
-                  <br />
-                  <span className="text-white/90">{t.heroTitle2}</span>
-                </h1>
-                <p className="mt-5 max-w-[560px] text-[15px] leading-7 text-[#a7adc0]">
-                  {t.heroSubBefore}{' '}
-                  <span className="rounded-md border border-white/10 bg-white/[0.06] px-1.5 py-0.5 text-white/90">
-                    .aep
-                  </span>{' '}
-                  {t.heroSubAfter}
-                </p>
-              </header>
-
-              <div className="mt-7 grid gap-3 sm:grid-cols-3">
-                <Metric label={locale === 'zh' ? '运行方式' : 'Runtime'} value={locale === 'zh' ? '浏览器本地' : 'In browser'} />
-                <Metric label={locale === 'zh' ? '目标范围' : 'Targets'} value="AE 2018-2026" />
-                <Metric label={locale === 'zh' ? '上传状态' : 'Upload'} value={locale === 'zh' ? '0 字节' : '0 bytes'} />
-              </div>
-
-              {/* ===== 引擎状态 ===== */}
-              {engineError && (
-                <div className="result-err glass mt-8 rounded-2xl border px-5 py-4">
-                  <p className="text-sm text-red-200">
-                    {t.engineFailPrefix}
-                    {engineError}
-                  </p>
-                </div>
-              )}
-
-              {/* ===== 上传区 ===== */}
-              <div className="mt-10">
-            <StepLabel n="01" title={t.step1} />
-            <div
-              role="button"
-              tabIndex={0}
-              aria-label={t.dropTitle}
-              onClick={() => inputRef.current?.click()}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') inputRef.current?.click();
-              }}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragActive(true);
-              }}
-              onDragLeave={() => setDragActive(false)}
-              onDrop={onDrop}
-              style={
-                dragActive
-                  ? {
-                      background:
-                        'linear-gradient(120deg,rgba(99,102,241,.98),rgba(34,211,238,.98),rgba(236,72,153,.95),rgba(139,92,246,.98))',
-                      backgroundSize: '220% 100%',
-                      animation: 'dragShift 1.6s linear infinite',
-                    }
-                  : undefined
-              }
-              className={`group relative mt-3 cursor-pointer select-none rounded-3xl p-[1px] transition-transform duration-300 ${
-                dragActive ? 'scale-[1.012]' : file ? '' : 'hover:scale-[1.006]'
-              } ${file && !converting && !dragActive ? 'flow-border' : ''}`}
-            >
-              <div
-                className={`relative overflow-hidden rounded-[calc(1.5rem-1px)] px-6 py-12 text-center transition-all duration-300 sm:py-14 ${
-                  dragActive
-                    ? 'bg-[rgba(9,11,20,0.95)]'
-                    : 'glass bg-[rgba(9,11,20,0.82)] hover:bg-[rgba(10,12,22,0.88)]'
-                }`}
-              >
-                {dragActive && (
-                  <div className="scan-beam pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-transparent via-indigo-400/[0.15] to-transparent" />
-                )}
-
-                {detecting ? (
-                  <div className="flex flex-col items-center gap-4 py-2">
-                    <div className="relative">
-                      <div className="h-14 w-14 animate-spin rounded-full border-2 border-indigo-400/[0.15] border-t-indigo-300" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Icon d={I.bolt} className="h-5 w-5 text-indigo-300" />
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-[15px] font-semibold text-white">
-                        {t.parsingTitle}
-                        <span className="dots" />
-                      </p>
-                      <p className="mt-1 text-xs text-[#8b93a8]">{t.parsingSub}</p>
-                    </div>
-                  </div>
-                ) : file ? (
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="relative">
-                      <div className="absolute inset-0 rounded-2xl bg-indigo-500/30 blur-xl" />
-                      <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.12] bg-gradient-to-br from-indigo-500/30 to-violet-500/20 text-indigo-200">
-                        <Icon d={I.file} className="h-6 w-6" />
-                      </div>
-                    </div>
-                    <div className="min-w-0 max-w-full">
-                      <p className="truncate text-[15px] font-semibold text-white">
-                        {file.name}
-                      </p>
-                      <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
-                        <span className="rounded-md bg-white/[0.06] px-2 py-0.5 text-[11px] tabular-nums text-[#8b93a8]">
-                          {formatSize(file.size)}
-                        </span>
-                        {sourceIsValid ? (
-                          <span
-                            className="rounded-md px-2 py-0.5 text-[11px] font-semibold text-black"
-                            style={{ background: stableGrad }}
-                          >
-                            {file.label}
-                          </span>
-                        ) : (
-                          <span className="rounded-md bg-amber-500/[0.15] px-2 py-0.5 text-[11px] font-semibold text-amber-300">
-                            {file.label || t.unknownVersion}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <p className="text-[11px] text-[#7d859c]">{t.replaceHint}</p>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center gap-5">
-                    <div className="relative transition-transform duration-300 group-hover:-translate-y-1">
-                      <div className="absolute inset-0 rounded-full bg-indigo-500/25 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
-                      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.12] bg-gradient-to-br from-indigo-500/20 to-violet-500/20 text-indigo-200 shadow-[0_0_30px_-6px_rgba(99,102,241,0.45)]">
-                        <Icon d={I.folder} className="h-7 w-7" />
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-base font-semibold text-white">{t.dropTitle}</p>
-                      <p className="mt-1.5 text-[13px] text-[#8b93a8]">{t.dropSub}</p>
-                    </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        inputRef.current?.click();
-                      }}
-                      className="neon-btn shine rounded-xl px-6 py-2.5 text-sm font-semibold text-white"
-                    >
-                      {t.chooseFile}
-                    </button>
-                  </div>
-                )}
-              </div>
+                {locale === 'zh' ? 'AEP 结构化转换器' : 'AEP STRUCTURE CONVERTER'}
+              </span>
+              <h1 className="mt-4 text-[40px] font-black leading-[1.04] text-white sm:text-[56px]">
+                <span className="text-gradient text-glow">{t.heroTitle1}</span>
+                <br />
+                <span className="text-white/90">{t.heroTitle2}</span>
+              </h1>
+              <p className="mt-4 max-w-[560px] text-[15px] leading-7 text-[#a7adc0]">
+                {t.heroSubBefore}{' '}
+                <span className="rounded-md border border-white/10 bg-white/[0.06] px-1.5 py-0.5 text-white/90">
+                  .aep
+                </span>{' '}
+                {t.heroSubAfter}
+              </p>
             </div>
-            <input
-              ref={inputRef}
-              type="file"
-              accept=".aep"
-              className="hidden"
-              onChange={(e) => {
-                if (e.target.files?.length) handleFiles(e.target.files);
-                e.target.value = '';
-              }}
-            />
+            <div className="flex shrink-0 items-center gap-2 self-start rounded-2xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[11px] font-semibold text-emerald-200 sm:self-end">
+              <Icon d={I.lock} className="h-3.5 w-3.5" />
+              <span>{locale === 'zh' ? '文件不上传 · 全程本地' : 'No upload · 100% local'}</span>
+            </div>
+          </header>
+
+          {/* ===== 关键指标 chips（4 个均匀） ===== */}
+          <div className="mt-7 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
+            <Metric label={locale === 'zh' ? '运行方式' : 'Runtime'} value={locale === 'zh' ? '浏览器本地' : 'In browser'} />
+            <Metric label={locale === 'zh' ? '目标范围' : 'Targets'} value="AE 2018-2026" />
+            <Metric label={locale === 'zh' ? '上传状态' : 'Upload'} value={locale === 'zh' ? '0 字节' : '0 bytes'} />
+            <Metric label={locale === 'zh' ? '处理耗时' : 'Latency'} value={locale === 'zh' ? '< 1 秒' : '< 1 sec'} />
           </div>
 
-          {/* ===== 版本选择 ===== */}
-          <div className="mt-10">
-            <StepLabel n="02" title={t.step2} />
-            {!engineReady ? (
-              <div className="glass mt-3 rounded-2xl px-5 py-6 text-center text-sm text-[#8b93a8]">
-                {t.engineLoading}
-                <span className="dots" />
-              </div>
-            ) : !file ? (
-              <div className="glass mt-3 rounded-2xl border-dashed px-5 py-6 text-center text-[13px] text-[#6f7890]">
-                {t.unlockHint}
-              </div>
-            ) : (
-              <div className="mt-3 grid grid-cols-3 gap-2.5 sm:gap-3">
-                {targets.map((target, i) => {
-                  const state = targetState!(target.major);
-                  const disabled = state !== 'available';
-                  const active = selectedMajor === target.major;
-                  const stable = target.stability === 'stable';
-                  return (
-                    <button
-                      key={target.major}
-                      disabled={disabled || converting}
-                      onClick={() => {
-                        setSelectedMajor(target.major);
-                        setResult(null);
-                      }}
-                      style={{ animationDelay: `${i * 34}ms` }}
-                      className={`version-card corner fade-up glass rounded-2xl px-3 py-3.5 text-center ${
-                        active ? 'selected' : ''
-                      } ${
-                        disabled
-                          ? 'cursor-not-allowed opacity-35 saturate-50'
-                          : 'cursor-pointer'
-                      }`}
-                    >
-                      <div
-                        className={`text-[13px] font-bold tracking-wide ${
-                          disabled
-                            ? 'text-[#6f7890]'
-                            : active
-                            ? 'text-white'
-                            : 'text-[#e8ebf5]'
-                        }`}
+          {/* ===== 引擎错误提示 ===== */}
+          {engineError && (
+            <div className="result-err glass mt-6 rounded-2xl border px-5 py-4">
+              <p className="text-sm text-red-200">
+                {t.engineFailPrefix}
+                {engineError}
+              </p>
+            </div>
+          )}
+
+          {/* ===== 主工作区：导入 + 选择 + 转换（单列） ===== */}
+          <div className="mt-12 space-y-10">
+            {/* 01 导入工程 */}
+            <section>
+              <StepLabel n="01" title={t.step1} />
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label={t.dropTitle}
+                onClick={() => inputRef.current?.click()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') inputRef.current?.click();
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragActive(true);
+                }}
+                onDragLeave={() => setDragActive(false)}
+                onDrop={onDrop}
+                style={
+                  dragActive
+                    ? {
+                        background:
+                          'linear-gradient(120deg,rgba(99,102,241,.98),rgba(34,211,238,.98),rgba(236,72,153,.95),rgba(139,92,246,.98))',
+                        backgroundSize: '220% 100%',
+                        animation: 'dragShift 1.6s linear infinite',
+                      }
+                    : undefined
+                }
+                className={`group relative mt-3 cursor-pointer select-none rounded-3xl p-[1px] transition-transform duration-300 ${
+                  dragActive ? 'scale-[1.012]' : file ? '' : 'hover:scale-[1.006]'
+                } ${file && !converting && !dragActive ? 'flow-border' : ''}`}
+              >
+                <div
+                  className={`relative overflow-hidden rounded-[calc(1.5rem-1px)] px-6 py-9 text-center transition-all duration-300 sm:py-10 ${
+                    dragActive
+                      ? 'bg-[rgba(9,11,20,0.95)]'
+                      : 'glass bg-[rgba(9,11,20,0.82)] hover:bg-[rgba(10,12,22,0.88)]'
+                  }`}
+                >
+                  {dragActive && (
+                    <div className="scan-beam pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-transparent via-indigo-400/[0.15] to-transparent" />
+                  )}
+
+                  {detecting ? (
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="relative">
+                        <div className="h-12 w-12 animate-spin rounded-full border-2 border-indigo-400/[0.15] border-t-indigo-300" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Icon d={I.bolt} className="h-4 w-4 text-indigo-300" />
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-[15px] font-semibold text-white">
+                          {t.parsingTitle}
+                          <span className="dots" />
+                        </p>
+                        <p className="mt-1 text-xs text-[#8b93a8]">{t.parsingSub}</p>
+                      </div>
+                    </div>
+                  ) : file ? (
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="relative">
+                        <div className="absolute inset-0 rounded-2xl bg-indigo-500/30 blur-xl" />
+                        <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/[0.12] bg-gradient-to-br from-indigo-500/30 to-violet-500/20 text-indigo-200">
+                          <Icon d={I.file} className="h-5 w-5" />
+                        </div>
+                      </div>
+                      <div className="min-w-0 max-w-full">
+                        <p className="truncate text-[15px] font-semibold text-white">
+                          {file.name}
+                        </p>
+                        <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+                          <span className="rounded-md bg-white/[0.06] px-2 py-0.5 text-[11px] tabular-nums text-[#8b93a8]">
+                            {formatSize(file.size)}
+                          </span>
+                          {sourceIsValid ? (
+                            <span
+                              className="rounded-md px-2 py-0.5 text-[11px] font-semibold text-black"
+                              style={{ background: stableGrad }}
+                            >
+                              {file.label}
+                            </span>
+                          ) : (
+                            <span className="rounded-md bg-amber-500/[0.15] px-2 py-0.5 text-[11px] font-semibold text-amber-300">
+                              {file.label || t.unknownVersion}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-[11px] text-[#7d859c]">{t.replaceHint}</p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="relative transition-transform duration-300 group-hover:-translate-y-1">
+                        <div className="absolute inset-0 rounded-full bg-indigo-500/25 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
+                        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.12] bg-gradient-to-br from-indigo-500/20 to-violet-500/20 text-indigo-200 shadow-[0_0_30px_-6px_rgba(99,102,241,0.45)]">
+                          <Icon d={I.folder} className="h-6 w-6" />
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-base font-semibold text-white">{t.dropTitle}</p>
+                        <p className="mt-1 text-[13px] text-[#8b93a8]">{t.dropSub}</p>
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          inputRef.current?.click();
+                        }}
+                        className="neon-btn shine rounded-xl px-5 py-2 text-sm font-semibold text-white"
                       >
+                        {t.chooseFile}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <input
+                ref={inputRef}
+                type="file"
+                accept=".aep"
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files?.length) handleFiles(e.target.files);
+                  e.target.value = '';
+                }}
+              />
+            </section>
+
+            {/* 02 选择目标版本 */}
+            <section>
+              <StepLabel n="02" title={t.step2} />
+              {!engineReady ? (
+                <div className="glass mt-3 rounded-2xl px-5 py-6 text-center text-sm text-[#8b93a8]">
+                  {t.engineLoading}
+                  <span className="dots" />
+                </div>
+              ) : !file ? (
+                <div className="mt-3 grid grid-cols-3 gap-2.5 sm:grid-cols-4 sm:gap-3">
+                  {targets.map((target) => (
+                    <div
+                      key={target.major}
+                      className="version-card glass rounded-2xl px-3 py-3 text-center opacity-45 saturate-50"
+                    >
+                      <div className="text-[12.5px] font-bold text-[#7a829b]">
                         {target.label}
                       </div>
                       <div
                         className="mx-auto mt-1.5 h-[3px] w-9 rounded-full"
                         style={{
-                          background: disabled
-                            ? 'rgba(255,255,255,0.14)'
-                            : stable
-                            ? stableGrad
-                            : experimentalGrad,
-                          opacity: active ? 1 : 0.6,
-                          boxShadow: active
-                            ? stable
-                              ? '0 0 10px rgba(52,211,153,.6)'
-                              : '0 0 10px rgba(251,146,60,.55)'
-                            : 'none',
+                          background: 'rgba(255,255,255,0.14)',
                         }}
                       />
-                      <div
-                        className={`mt-1 text-[10px] font-medium ${
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-3 grid grid-cols-3 gap-2.5 sm:grid-cols-4 sm:gap-3">
+                  {targets.map((target, i) => {
+                    const state = targetState!(target.major);
+                    const disabled = state !== 'available';
+                    const active = selectedMajor === target.major;
+                    const stable = target.stability === 'stable';
+                    return (
+                      <button
+                        key={target.major}
+                        disabled={disabled || converting}
+                        onClick={() => {
+                          setSelectedMajor(target.major);
+                          setResult(null);
+                        }}
+                        style={{ animationDelay: `${i * 34}ms` }}
+                        className={`version-card corner fade-up glass rounded-2xl px-3 py-3 text-center ${
+                          active ? 'selected' : ''
+                        } ${
                           disabled
-                            ? 'text-[#565e75]'
-                            : active
-                            ? 'text-indigo-200/90'
-                            : 'text-[#7a829b]'
+                            ? 'cursor-not-allowed opacity-35 saturate-50'
+                            : 'cursor-pointer'
                         }`}
                       >
-                        {stable ? t.stable : t.experimental}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* ===== 转换按钮 ===== */}
-          <div className="mt-10">
-            <button
-              disabled={!file || selectedMajor === null || converting || !engineReady}
-              onClick={convert}
-              className={`neon-btn flex w-full items-center justify-center gap-3 rounded-2xl py-4 text-[15px] font-bold text-white ${
-                converting ? 'shine cursor-wait' : ''
-              }`}
-            >
-              {converting ? (
-                <>
-                  <span className="spinner" />
-                  <span>
-                    {t.convertingPrefix} {selectedMajor}
-                    <span className="dots" />
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Icon d={I.bolt} className="h-[18px] w-[18px]" />
-                  <span>{t.convertBtn}</span>
-                  {selectedMajor && file && (
-                    <span className="rounded-lg bg-white/[0.15] px-2 py-0.5 text-xs font-semibold tabular-nums">
-                      AE {selectedMajor}
-                    </span>
-                  )}
-                </>
-              )}
-            </button>
-            {selectedMajor !== null && file && sourceIsValid && (
-              <p className="mt-3 text-center text-[11px] text-[#6f7890]">
-                {file.label} → {t.convertHintBefore}
-                {selectedMajor}
-                {t.convertHintAfter}
-              </p>
-            )}
-          </div>
-
-          {/* ===== 结果 ===== */}
-          {result && (
-            <div
-              className={`pop-in mt-8 rounded-2xl border px-5 py-5 backdrop-blur-xl ${
-                result.ok ? 'result-ok' : 'result-err'
-              }`}
-              role="status"
-            >
-              <div className="flex items-start gap-4">
-                <div
-                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${
-                    result.ok
-                      ? 'border-emerald-400/40 bg-emerald-400/[0.15] text-emerald-300'
-                      : 'border-red-400/40 bg-red-400/[0.15] text-red-300'
-                  }`}
-                >
-                  <Icon d={result.ok ? I.check : I.x} className="h-5 w-5" />
+                        <div
+                          className={`text-[13px] font-bold tracking-wide ${
+                            disabled
+                              ? 'text-[#6f7890]'
+                              : active
+                              ? 'text-white'
+                              : 'text-[#e8ebf5]'
+                          }`}
+                        >
+                          {target.label}
+                        </div>
+                        <div
+                          className="mx-auto mt-1.5 h-[3px] w-9 rounded-full"
+                          style={{
+                            background: disabled
+                              ? 'rgba(255,255,255,0.14)'
+                              : stable
+                              ? stableGrad
+                              : experimentalGrad,
+                            opacity: active ? 1 : 0.6,
+                            boxShadow: active
+                              ? stable
+                                ? '0 0 10px rgba(52,211,153,.6)'
+                                : '0 0 10px rgba(251,146,60,.55)'
+                              : 'none',
+                          }}
+                        />
+                        <div
+                          className={`mt-1 text-[10px] font-medium ${
+                            disabled
+                              ? 'text-[#565e75]'
+                              : active
+                              ? 'text-indigo-200/90'
+                              : 'text-[#7a829b]'
+                          }`}
+                        >
+                          {stable ? t.stable : t.experimental}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p
-                    className={`text-[15px] font-bold ${
-                      result.ok ? 'text-emerald-200' : 'text-red-200'
+              )}
+            </section>
+
+            {/* 03 转换按钮 */}
+            <section>
+              <StepLabel n="03" title={t.step3} />
+              <button
+                disabled={!file || selectedMajor === null || converting || !engineReady}
+                onClick={convert}
+                className={`neon-btn mt-3 flex w-full items-center justify-center gap-3 rounded-2xl py-4 text-[15px] font-bold text-white ${
+                  converting ? 'shine cursor-wait' : ''
+                }`}
+              >
+                {converting ? (
+                  <>
+                    <span className="spinner" />
+                    <span>
+                      {t.convertingPrefix} {selectedMajor}
+                      <span className="dots" />
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Icon d={I.bolt} className="h-[18px] w-[18px]" />
+                    <span>{t.convertBtn}</span>
+                    {selectedMajor && file && (
+                      <span className="rounded-lg bg-white/[0.15] px-2 py-0.5 text-xs font-semibold tabular-nums">
+                        AE {selectedMajor}
+                      </span>
+                    )}
+                  </>
+                )}
+              </button>
+              {selectedMajor !== null && file && sourceIsValid && (
+                <p className="mt-3 text-center text-[11px] text-[#6f7890]">
+                  {file.label} → {t.convertHintBefore}
+                  {selectedMajor}
+                  {t.convertHintAfter}
+                </p>
+              )}
+            </section>
+
+            {/* 结果 */}
+            {result && (
+              <div
+                className={`pop-in rounded-2xl border px-5 py-5 backdrop-blur-xl ${
+                  result.ok ? 'result-ok' : 'result-err'
+                }`}
+                role="status"
+              >
+                <div className="flex items-start gap-4">
+                  <div
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${
+                      result.ok
+                        ? 'border-emerald-400/40 bg-emerald-400/[0.15] text-emerald-300'
+                        : 'border-red-400/40 bg-red-400/[0.15] text-red-300'
                     }`}
                   >
-                    {result.ok ? t.resultOk : t.resultFail}
-                  </p>
-                  <p className="mt-1 break-all text-sm text-white/80">{result.message}</p>
-                  {result.ok && (
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {t.tags.map((tag) => (
+                    <Icon d={result.ok ? I.check : I.x} className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p
+                      className={`text-[15px] font-bold ${
+                        result.ok ? 'text-emerald-200' : 'text-red-200'
+                      }`}
+                    >
+                      {result.ok ? t.resultOk : t.resultFail}
+                    </p>
+                    <p className="mt-1 break-all text-sm text-white/80">{result.message}</p>
+                    {result.ok && (
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {t.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-md bg-emerald-400/10 px-2 py-0.5 text-[11px] text-emerald-200/90"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                {Array.isArray(result.detail) && result.detail.length > 0 && (
+                  <div className="mt-3 border-t border-white/[0.08] pt-3">
+                    <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wider text-[#6f7890]">
+                      {t.detailTitle}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {result.detail.map((d, i) => (
                         <span
-                          key={tag}
-                          className="rounded-md bg-emerald-400/10 px-2 py-0.5 text-[11px] text-emerald-200/90"
+                          key={i}
+                          className="rounded-md bg-white/5 px-2 py-0.5 text-[11px] text-[#c6cbe0]"
                         >
-                          {tag}
+                          {d}
                         </span>
                       ))}
                     </div>
-                  )}
-                </div>
-              </div>
-              {Array.isArray(result.detail) && result.detail.length > 0 && (
-                <div className="mt-3 border-t border-white/[0.08] pt-3">
-                  <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wider text-[#6f7890]">
-                    {t.detailTitle}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {result.detail.map((d, i) => (
-                      <span
-                        key={i}
-                        className="rounded-md bg-white/5 px-2 py-0.5 text-[11px] text-[#c6cbe0]"
-                      >
-                        {d}
-                      </span>
-                    ))}
                   </div>
-                </div>
-              )}
-            </div>
-          )}
-            </div>
+                )}
+              </div>
+            )}
+          </div>
 
-            <EngineConsole
-              engineReady={engineReady}
-              fileReady={!!file}
-              sourceLabel={sourceLabel}
-              targetLabel={targetLabel}
-              progress={progress}
-              resultOk={result?.ok ?? false}
-              locale={locale}
-            />
-          </section>
-
-          {/* ===== 功能说明 ===== */}
-          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <Feature
-              icon={I.shield}
-              title={t.features[0].title}
-              desc={t.features[0].desc}
-              glow="rgba(52,211,153,0.35)"
-            />
-            <Feature
-              icon={I.cpu}
-              title={t.features[1].title}
-              desc={t.features[1].desc}
-              glow="rgba(99,102,241,0.4)"
-            />
-            <Feature
-              icon={I.layers}
-              title={t.features[2].title}
-              desc={t.features[2].desc}
-              glow="rgba(236,72,153,0.35)"
-            />
+          {/* ===== 核心优势（与 SEO 衔接） ===== */}
+          <div className="mt-16">
+            <div className="mb-5 flex items-end justify-between gap-4">
+              <div>
+                <h2 className="text-[20px] font-black tracking-tight text-white">
+                  {locale === 'zh' ? '为什么选择' : 'Why it works'}
+                </h2>
+                <p className="mt-1 text-[13px] text-[#8b93a8]">
+                  {locale === 'zh'
+                    ? '结构化重建 + 本地处理，确保旧版工程安全打开'
+                    : 'Structured rebuild with on-device processing'}
+                </p>
+              </div>
+              <div className="hidden h-px flex-1 bg-gradient-to-r from-white/[0.12] via-white/[0.04] to-transparent sm:block" />
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <Feature
+                icon={I.shield}
+                title={t.features[0].title}
+                desc={t.features[0].desc}
+                glow="rgba(52,211,153,0.35)"
+              />
+              <Feature
+                icon={I.cpu}
+                title={t.features[1].title}
+                desc={t.features[1].desc}
+                glow="rgba(99,102,241,0.4)"
+              />
+              <Feature
+                icon={I.layers}
+                title={t.features[2].title}
+                desc={t.features[2].desc}
+                glow="rgba(236,72,153,0.35)"
+              />
+            </div>
           </div>
 
           {/* ===== SEO 正文（服务端渲染） ===== */}
@@ -652,114 +667,80 @@ function Metric({ label, value }: { label: string; value: string }) {
   );
 }
 
-function EngineConsole({
+function ProgressStepper({
   engineReady,
   fileReady,
-  sourceLabel,
-  targetLabel,
-  progress,
+  targetReady,
   resultOk,
   locale,
 }: {
   engineReady: boolean;
   fileReady: boolean;
-  sourceLabel: string;
-  targetLabel: string;
-  progress: number;
+  targetReady: boolean;
   resultOk: boolean;
   locale: Locale;
 }) {
+  const t = getDict(locale);
   const steps = [
-    {
-      label: locale === 'zh' ? '加载转换内核' : 'Load engine',
-      done: engineReady,
-      value: engineReady ? 'READY' : 'WAIT',
-    },
-    {
-      label: locale === 'zh' ? '识别源工程' : 'Detect source',
-      done: fileReady,
-      value: sourceLabel,
-    },
-    {
-      label: locale === 'zh' ? '写入目标版本' : 'Patch target',
-      done: targetLabel.startsWith('AE '),
-      value: targetLabel,
-    },
-    {
-      label: locale === 'zh' ? '生成下载副本' : 'Create copy',
-      done: resultOk,
-      value: resultOk ? 'DONE' : 'IDLE',
-    },
+    { key: 'engine', label: t.stepper.engine, done: engineReady },
+    { key: 'detect', label: t.stepper.detect, done: fileReady },
+    { key: 'select', label: t.stepper.select, done: targetReady },
+    { key: 'done', label: t.stepper.done, done: resultOk },
   ];
+  const completed = steps.filter((s) => s.done).length;
+  const total = steps.length;
+  const pct = Math.round((completed / total) * 100);
 
   return (
-    <aside className="engine-console glass-strong sticky top-6 rounded-[28px] p-5">
-      <div className="mb-5 flex items-center justify-between">
-        <div>
-          <p className="text-[11px] font-semibold uppercase text-[#7d859c]">
-            {locale === 'zh' ? '实时引擎状态' : 'Live Engine'}
-          </p>
-          <h2 className="mt-1 text-lg font-black text-white">
-            {locale === 'zh' ? '转换中控台' : 'Conversion Console'}
-          </h2>
-        </div>
-        <div className="pulse-core flex h-12 w-12 items-center justify-center rounded-2xl text-cyan-100">
-          <Icon d={I.cpu} className="h-6 w-6" />
-        </div>
-      </div>
-
-      <div className="console-screen rounded-2xl p-4">
-        <div className="mb-3 flex items-center justify-between text-[11px] font-semibold text-[#8b93a8]">
-          <span>{locale === 'zh' ? '任务进度' : 'Progress'}</span>
-          <span className="tabular-nums text-cyan-200">{progress}%</span>
-        </div>
-        <div className="h-2 overflow-hidden rounded-full bg-white/[0.06]">
+    <div className="glass mt-5 rounded-2xl px-4 py-3 sm:mt-6 sm:px-5 sm:py-3.5">
+      {/* 移动端：紧凑进度条 + 文本 */}
+      <div className="flex items-center gap-3 sm:hidden">
+        <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
           <div
-            className="progress-fill h-full rounded-full"
-            style={{ width: `${Math.max(progress, engineReady ? 12 : 4)}%` }}
+            className="h-full rounded-full bg-gradient-to-r from-indigo-300 via-cyan-200 to-emerald-300 transition-all duration-500"
+            style={{ width: `${pct}%` }}
           />
         </div>
+        <span className="text-[11px] font-semibold tabular-nums text-cyan-200">
+          {completed}/{total}
+        </span>
+      </div>
 
-        <div className="mt-5 space-y-3">
-          {steps.map((step, index) => (
-            <div className="flex items-center gap-3" key={step.label}>
+      {/* 桌面端：四步横向步骤条 */}
+      <div className="hidden items-center gap-1 sm:flex">
+        {steps.map((step, i) => (
+          <div key={step.key} className="flex flex-1 items-center">
+            <div className="flex min-w-0 items-center gap-2">
               <span
-                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black tabular-nums ${
+                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black transition-colors ${
                   step.done
-                    ? 'border-cyan-300/40 bg-cyan-300/15 text-cyan-100'
+                    ? 'border-emerald-300/40 bg-emerald-300/15 text-emerald-200'
                     : 'border-white/10 bg-white/[0.04] text-[#6f7890]'
                 }`}
               >
-                {step.done ? <Icon d={I.check} className="h-3.5 w-3.5" /> : index + 1}
+                {step.done ? <Icon d={I.check} className="h-3.5 w-3.5" /> : i + 1}
               </span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-[12px] font-semibold text-white/85">{step.label}</p>
-                <p className="truncate text-[10px] font-semibold text-[#6f7890]">{step.value}</p>
-              </div>
+              <span
+                className={`truncate text-[12px] font-semibold ${
+                  step.done ? 'text-white/90' : 'text-[#6f7890]'
+                }`}
+              >
+                {step.label}
+              </span>
             </div>
-          ))}
-        </div>
+            {i < steps.length - 1 && (
+              <div className="mx-3 h-px flex-1 bg-white/[0.08]">
+                <div
+                  className={`h-full transition-all duration-500 ${
+                    steps[i + 1].done ? 'bg-emerald-300/50' : 'bg-transparent'
+                  }`}
+                />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.035] px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-[#6f7890]">
-            {locale === 'zh' ? '文件流' : 'File flow'}
-          </p>
-          <p className="mt-1 text-sm font-bold text-emerald-200">
-            {locale === 'zh' ? '本地' : 'Local'}
-          </p>
-        </div>
-        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.035] px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-[#6f7890]">
-            {locale === 'zh' ? '模式' : 'Mode'}
-          </p>
-          <p className="mt-1 text-sm font-bold text-indigo-200">
-            {locale === 'zh' ? '结构化' : 'Structured'}
-          </p>
-        </div>
-      </div>
-    </aside>
+    </div>
   );
 }
 

@@ -38,6 +38,13 @@ const zh = {
   /* ---------- 步骤 ---------- */
   step1: '导入工程',
   step2: '选择目标版本',
+  step3: '转换并下载',
+  stepper: {
+    engine: '加载引擎',
+    detect: '识别源版本',
+    select: '选择目标',
+    done: '生成副本',
+  },
 
   /* ---------- 上传区 ---------- */
   dropTitle: '拖入工程文件到这里',
@@ -164,6 +171,13 @@ const en: Dict = {
 
   step1: 'Import project',
   step2: 'Choose target version',
+  step3: 'Convert & download',
+  stepper: {
+    engine: 'Load engine',
+    detect: 'Detect source',
+    select: 'Select target',
+    done: 'Create copy',
+  },
 
   dropTitle: 'Drag your project file here',
   dropSub: 'or click the button to browse',
