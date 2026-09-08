@@ -1,0 +1,18 @@
+{
+  "name": "Qi AEP Downgrader — AE 工程降级工具",
+  "short_name": "AEP 降级",
+  "description": "浏览器本地降级 Adobe After Effects .aep 工程，支持 AE 2018 - AE 2026，文件不上传。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#05060a",
+  "theme_color": "#05060a",
+  "categories": ["utilities", "productivity", "multimedia"],
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/og-zh.png", "sizes": "1200x630", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

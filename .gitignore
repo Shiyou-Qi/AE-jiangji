@@ -1,0 +1,22 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+_npmcache/
+
+# 本地工具数据 / 调试产物
+.workbuddy/
+.shots/
+*.log
+
+# 系统
+.DS_Store
+Thumbs.db

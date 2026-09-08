@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# WebAssembly 转换核心（公开资源，允许抓取以保证功能正常）
+Allow: /wasm/
+Allow: /_next/
+Allow: /icon.svg
+Allow: /og-zh.png
+Allow: /og-en.png
+
+Disallow: /api/
+
+Sitemap: https://aep-downgrader.vercel.app/sitemap.xml
