@@ -108,7 +108,7 @@ const zh = {
     },
   ],
   verTitle: '支持的 After Effects 版本',
-  verSub: '转换内核对齐官方结构化重建逻辑，覆盖主流版本',
+  verSub: '结构化重建对齐官方逻辑，覆盖主流版本',
   verNote: '标注 STABLE 的版本经过完整验证，EXPERIMENTAL 版本建议转换后先在副本上试打开。',
   faqTitle: '常见问题',
   faqSub: '关于 AEP 降级、兼容性与隐私',
@@ -226,7 +226,7 @@ const en: Dict = {
     },
   ],
   verTitle: 'Supported After Effects versions',
-  verSub: 'Conversion core mirrors the official structured rebuild logic',
+  verSub: 'Structured rebuild aligned with the official logic, AE 2018 - 2026 covered',
   verNote:
     'STABLE targets are fully verified. EXPERIMENTAL targets should be test-opened on a copy first.',
   faqTitle: 'Frequently asked questions',
