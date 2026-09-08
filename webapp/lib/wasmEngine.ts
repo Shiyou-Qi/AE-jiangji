@@ -52,6 +52,30 @@ export function friendlyError(e: unknown, locale: 'zh' | 'en' = 'zh'): string {
 let core: any = null;
 let loadPromise: Promise<any> | null = null;
 
+// 缓存失效重试：某些环境（Vercel CDN + max-age=0 + Etag）在缓存条目损坏时会报
+// ERR_CACHE_READ_FAILURE / Failed to fetch（Chrome 已知 bug，微信内置浏览器尤其常见）。
+// 对策：① 请求加 cache:'no-store' 绕过本地磁盘缓存；② 失败自动重试；③ 附加缓存破坏参数。
+async function fetchWasmBytes(): Promise<ArrayBuffer> {
+  const url = '/wasm/aep_core_bg.wasm';
+  // 缓存破坏版本号 —— 未来若 wasm 更新，改这里即可强制所有用户重新下载
+  const busted = `${url}?v=20260908`;
+  const attempt = async (u: string, cache: RequestCache): Promise<ArrayBuffer> => {
+    const res = await fetch(u, { cache });
+    if (!res.ok) throw new Error(`wasm fetch ${res.status}`);
+    return res.arrayBuffer();
+  };
+  const lastErr: unknown[] = [];
+  // 第 1 次：无缓存（no-store），绕开本地缓存损坏导致的 ERR_CACHE_READ_FAILURE
+  for (const cache of ['no-store', 'no-cache', 'default'] as RequestCache[]) {
+    try {
+      return await attempt(busted, cache);
+    } catch (e) {
+      lastErr.push(e);
+    }
+  }
+  throw lastErr[lastErr.length - 1];
+}
+
 // 懒加载 wasm 核心（单例）
 export async function loadWasmCore(): Promise<any> {
   if (core) return core;
@@ -61,11 +85,15 @@ export async function loadWasmCore(): Promise<any> {
     // public 目录下的 wasm-bindgen 胶水模块，运行时动态加载，不参与 webpack 打包
     // @ts-ignore
     const mod = await import(/* webpackIgnore: true */ '/wasm/aep_core.js');
-    const wasmBytes = await fetch('/wasm/aep_core_bg.wasm').then((r) => r.arrayBuffer());
+    const wasmBytes = await fetchWasmBytes();
     mod.initSync({ module: new WebAssembly.Module(wasmBytes) });
     core = mod;
     return mod;
-  })();
+  })().catch((e) => {
+    // 单例失败后允许下次重试
+    loadPromise = null;
+    throw e;
+  });
 
   return loadPromise;
 }
