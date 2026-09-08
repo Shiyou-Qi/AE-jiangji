@@ -10,4 +10,4 @@ Allow: /og-en.png
 
 Disallow: /api/
 
-Sitemap: https://aep-downgrader.vercel.app/sitemap.xml
+Sitemap: https://aejiangji.vercel.app/sitemap.xml

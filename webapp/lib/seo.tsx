@@ -3,7 +3,7 @@ import { getDict, localeHref, locales, seo, type Locale } from './i18n';
 
 // 站点地址：部署时通过 NEXT_PUBLIC_SITE_URL 覆盖（不带结尾斜杠）
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://aep-downgrader.vercel.app'
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://aejiangji.vercel.app'
 ).replace(/\/+$/, '');
 
 export const SITE_VERSION = '1.0.0';

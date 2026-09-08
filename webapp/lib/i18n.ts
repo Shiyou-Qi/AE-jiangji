@@ -7,7 +7,7 @@ export const defaultLocale: Locale = 'zh';
 
 export const localeHref: Record<Locale, string> = {
   zh: '/',
-  en: '/en',
+  en: '/en/',
 };
 
 export const htmlLang: Record<Locale, string> = {
