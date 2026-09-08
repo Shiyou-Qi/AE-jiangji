@@ -102,7 +102,7 @@ export function buildJsonLd(locale: Locale) {
     applicationCategory: 'MultimediaApplication',
     applicationSubCategory: 'Video Editing Utility',
     operatingSystem: 'Any (Chrome, Edge, Firefox, Safari)',
-    browserRequirements: 'Requires a browser with WebAssembly support',
+    browserRequirements: 'Any modern web browser (Chrome, Edge, Firefox, Safari)',
     softwareVersion: SITE_VERSION,
     isAccessibleForFree: true,
     keywords: s.keywords.join(', '),

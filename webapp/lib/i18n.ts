@@ -127,7 +127,7 @@ const zh = {
     },
     {
       q: '我的工程文件会被上传到服务器吗？',
-      a: '不会。转换内核是编译为 WebAssembly 的 Rust 程序，完全在你的浏览器内存中运行，文件数据从不离开本机，也不需要注册或登录。',
+      a: '不会。转换全程在你的浏览器内存中完成，文件数据从不离开本机，也不需要注册或登录。',
     },
     {
       q: '支持哪些输入版本，能升版吗？',
@@ -140,7 +140,7 @@ const zh = {
   ],
 
   /* ---------- 页脚 ---------- */
-  footerCore: 'Rust / WebAssembly 转换内核',
+  footerCore: '浏览器本地转换引擎',
   footerPrivacy: '100% 本地处理 · 无上传 · 无水印 · 免费使用',
   seoIntroTitle: '在线 AEP 降级工具',
   seoIntroBody:
@@ -246,7 +246,7 @@ const en: Dict = {
     },
     {
       q: 'Is my project uploaded to a server?',
-      a: 'No. The conversion core is a Rust program compiled to WebAssembly that runs entirely in your browser memory. File data never leaves your machine, and no sign-up is required.',
+      a: 'No. Conversion runs entirely in your browser memory — file data never leaves your machine, and no sign-up is required.',
     },
     {
       q: 'Which input versions are supported? Can it upgrade?',
@@ -258,7 +258,7 @@ const en: Dict = {
     },
   ],
 
-  footerCore: 'Rust / WebAssembly conversion core',
+  footerCore: 'In-browser conversion engine',
   footerPrivacy: '100% local · no upload · no watermark · free to use',
   seoIntroTitle: 'Free online AEP downgrader',
   seoIntroBody:
