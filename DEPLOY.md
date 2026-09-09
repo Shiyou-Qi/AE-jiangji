@@ -1,6 +1,35 @@
-# 部署说明（Vercel）
+# 部署说明
 
 项目结构：`webapp/` 是 Next.js 14 静态导出站点（`output: 'export'`，构建产物在 `webapp/out`）。
+
+## Cloudflare Pages
+
+如果 Cloudflare 报错 `Could not detect a directory containing static files`，说明 Pages 没拿到静态输出目录。仓库根目录已提供 `wrangler.toml`：
+
+```toml
+name = "ae-jiangji"
+pages_build_output_dir = "webapp/out"
+```
+
+Cloudflare Pages 连接 GitHub 时推荐使用以下设置：
+
+| 项 | 值 |
+| --- | --- |
+| Framework preset | Next.js 或 None |
+| Root directory | 留空 |
+| Build command | `cd webapp && npm install && npm run build` |
+| Build output directory | `webapp/out` |
+| Environment variable | `NEXT_PUBLIC_SITE_URL=https://你的域名` |
+
+如果把 Cloudflare 的 Root directory 设置为 `webapp`，则对应改为：
+
+| 项 | 值 |
+| --- | --- |
+| Root directory | `webapp` |
+| Build command | `npm install && npm run build` |
+| Build output directory | `out` |
+
+不要把输出目录留空，否则 Wrangler 无法自动判断 Next 静态导出的 `out` 目录。
 
 ## 方式一：Vercel 连接 GitHub（推荐）
 
