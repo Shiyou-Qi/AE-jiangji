@@ -1,6 +1,11 @@
 name = "ae-jiangji"
+compatibility_date = "2026-09-09"
 pages_build_output_dir = "webapp/out"
 
 # This repository is a Cloudflare Pages static export.
 # Use `wrangler pages deploy webapp/out --project-name=ae-jiangji`.
-# Do not use `wrangler deploy`, which expects a Worker entry file.
+# If Cloudflare still runs `wrangler deploy`, the assets fallback below
+# points Wrangler at the generated static export directory.
+
+[assets]
+directory = "webapp/out"

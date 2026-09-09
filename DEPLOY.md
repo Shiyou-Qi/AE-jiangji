@@ -27,6 +27,8 @@ Cloudflare Pages 连接 GitHub 时推荐使用以下设置：
 Missing entry-point to Worker script or to assets directory
 ```
 
+仓库里的 `wrangler.toml` 已经加入 `[assets] directory = "webapp/out"` 作为兜底，所以即使误跑 `wrangler deploy` 也能找到静态资源目录。但如果你创建的是 Cloudflare Pages 项目，仍然建议改成 Pages 命令。
+
 如果 Cloudflare 要求填写 Deploy command，请使用 Pages 命令：
 
 ```bash
