@@ -73,8 +73,8 @@ type ResultState = {
   outName?: string;
 };
 
-const stableGrad = 'linear-gradient(120deg,#6ee7b7,#34d399 45%,#10b981)';
-const experimentalGrad = 'linear-gradient(120deg,#fcd34d,#f59e0b 55%,#f97316)';
+const stableColor = '#34d399';
+const experimentalColor = '#f59e0b';
 
 export default function Tool({
   locale,
@@ -198,29 +198,29 @@ export default function Tool({
     >
       {/* ===== 背景装饰 ===== */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_-5%,rgba(56,79,182,0.22),transparent_70%)]" />
-        <div className="premium-mesh absolute inset-0" />
-        <div className="radar-sweep absolute left-1/2 top-0 h-[720px] w-[720px] -translate-x-1/2" />
-        <div className="absolute -top-40 -left-40 h-[560px] w-[560px] aurora-blob aurora-a" />
-        <div className="absolute top-[8%] -right-52 h-[620px] w-[620px] aurora-blob aurora-b" />
-        <div className="absolute bottom-[-18%] left-[24%] h-[560px] w-[560px] aurora-blob aurora-c" />
+        <div className="absolute inset-0 bg-[#070912]" />
         <div className="absolute inset-0 bg-grid" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,6,10,0)_0%,rgba(5,6,10,0.82)_72%,#05060a_100%)]" />
       </div>
 
       <ParticleField />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center px-5 pb-16 pt-7 sm:px-8 lg:pt-10">
-        <div className="home-enter w-full max-w-[1080px]">
+        <div className="home-enter w-full max-w-[880px]">
           {/* ===== 顶部导航 ===== */}
-          <nav className="top-console glass flex items-center justify-between gap-4 rounded-2xl px-4 py-3">
-            <div className="flex min-w-0 items-center gap-3">
-              <div className="brand-core flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white">
-                <Icon d={I.bolt} className="h-5 w-5" />
+          <nav className="top-console glass flex items-center justify-between gap-4 rounded-2xl px-4 py-4">
+            <div className="flex min-w-0 items-center gap-3.5">
+              <div className="brand-core flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl text-white sm:h-16 sm:w-16">
+                <img
+                  src="/logo_icon.png"
+                  alt={t.brand}
+                  className="h-full w-full object-cover"
+                  width="64"
+                  height="64"
+                />
               </div>
               <div className="min-w-0">
-                <p className="text-[13px] font-bold text-white">{t.brand}</p>
-                <p className="truncate text-[11px] text-[#7d859c]">{t.badge}</p>
+                <p className="text-[15px] font-black text-white">{t.brand}</p>
+                <p className="mt-0.5 truncate text-[11px] font-semibold text-[#8993b2]">{t.badge}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -240,27 +240,23 @@ export default function Tool({
           {/* ===== Hero ===== */}
           <header className="mt-6 flex flex-col gap-5 sm:mt-8 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
             <div className="min-w-0 flex-1">
-              <span className="inline-flex items-center gap-2 rounded-full border border-indigo-300/20 bg-indigo-300/10 px-3.5 py-1.5 text-[11px] font-semibold text-[#bfc9ff]">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#303855] bg-[#12182a] px-3.5 py-1.5 text-[11px] font-semibold text-[#c8d1ff]">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-300 opacity-70" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan-200" />
                 </span>
                 {locale === 'zh' ? 'AEP 结构化转换器' : 'AEP STRUCTURE CONVERTER'}
               </span>
-              <h1 className="mt-4 text-[40px] font-black leading-[1.04] text-white sm:text-[56px]">
-                <span className="text-gradient text-glow">{t.heroTitle1}</span>
-                <br />
-                <span className="text-white/90">{t.heroTitle2}</span>
-              </h1>
+              <HeroTitle locale={locale} />
               <p className="mt-4 max-w-[560px] text-[15px] leading-7 text-[#a7adc0]">
                 {t.heroSubBefore}{' '}
-                <span className="rounded-md border border-white/10 bg-white/[0.06] px-1.5 py-0.5 text-white/90">
+                <span className="rounded-md border border-[#303855] bg-[#151b2c] px-1.5 py-0.5 text-white/90">
                   .aep
                 </span>{' '}
                 {t.heroSubAfter}
               </p>
             </div>
-            <div className="flex shrink-0 items-center gap-2 self-start rounded-2xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[11px] font-semibold text-emerald-200 sm:self-end">
+            <div className="flex shrink-0 items-center gap-2 self-start rounded-2xl border border-[#294338] bg-[#102119] px-3 py-2 text-[11px] font-semibold text-emerald-200 sm:self-end">
               <Icon d={I.lock} className="h-3.5 w-3.5" />
               <span>{locale === 'zh' ? '文件不上传 · 全程本地' : 'No upload · 100% local'}</span>
             </div>
@@ -306,26 +302,23 @@ export default function Tool({
                 style={
                   dragActive
                     ? {
-                        background:
-                          'linear-gradient(120deg,rgba(99,102,241,.98),rgba(34,211,238,.98),rgba(236,72,153,.95),rgba(139,92,246,.98))',
-                        backgroundSize: '220% 100%',
-                        animation: 'dragShift 1.6s linear infinite',
+                        background: '#5b6ee1',
                       }
                     : undefined
                 }
-                className={`group relative mt-3 cursor-pointer select-none rounded-3xl p-[1px] transition-transform duration-300 ${
+                className={`group relative mt-3 cursor-pointer select-none rounded-3xl border-2 border-[#3d4d7b] bg-[#151d33] p-[2px] shadow-[0_24px_80px_-44px_rgba(91,110,225,0.85)] transition-all duration-300 hover:border-[#6378ee] ${
                   dragActive ? 'scale-[1.012]' : file ? '' : 'hover:scale-[1.006]'
                 } ${file && !converting && !dragActive ? 'flow-border' : ''}`}
               >
                 <div
-                  className={`relative overflow-hidden rounded-[calc(1.5rem-1px)] px-6 py-9 text-center transition-all duration-300 sm:py-10 ${
+                  className={`relative overflow-hidden rounded-[calc(1.5rem-3px)] border border-dashed border-[#5a6fae] px-6 py-11 text-center transition-all duration-300 sm:py-12 ${
                     dragActive
-                      ? 'bg-[rgba(9,11,20,0.95)]'
-                      : 'glass bg-[rgba(9,11,20,0.82)] hover:bg-[rgba(10,12,22,0.88)]'
+                      ? 'bg-[#121b35]'
+                      : 'bg-[#101827] hover:bg-[#121b30]'
                   }`}
                 >
                   {dragActive && (
-                    <div className="scan-beam pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-transparent via-indigo-400/[0.15] to-transparent" />
+                    <div className="scan-beam pointer-events-none absolute inset-x-0 top-0 h-1 bg-[#5b6ee1]/70" />
                   )}
 
                   {detecting ? (
@@ -347,8 +340,8 @@ export default function Tool({
                   ) : file ? (
                     <div className="flex flex-col items-center gap-3">
                       <div className="relative">
-                        <div className="absolute inset-0 rounded-2xl bg-indigo-500/30 blur-xl" />
-                        <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/[0.12] bg-gradient-to-br from-indigo-500/30 to-violet-500/20 text-indigo-200">
+                        <div className="absolute inset-0 rounded-2xl bg-[#27376a] opacity-60 blur-xl" />
+                        <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-[#303855] bg-[#18213a] text-indigo-200">
                           <Icon d={I.file} className="h-5 w-5" />
                         </div>
                       </div>
@@ -363,7 +356,7 @@ export default function Tool({
                           {sourceIsValid ? (
                             <span
                               className="rounded-md px-2 py-0.5 text-[11px] font-semibold text-black"
-                              style={{ background: stableGrad }}
+                              style={{ background: stableColor }}
                             >
                               {file.label}
                             </span>
@@ -379,21 +372,21 @@ export default function Tool({
                   ) : (
                     <div className="flex flex-col items-center gap-4">
                       <div className="relative transition-transform duration-300 group-hover:-translate-y-1">
-                        <div className="absolute inset-0 rounded-full bg-indigo-500/25 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
-                        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.12] bg-gradient-to-br from-indigo-500/20 to-violet-500/20 text-indigo-200 shadow-[0_0_30px_-6px_rgba(99,102,241,0.45)]">
-                          <Icon d={I.folder} className="h-6 w-6" />
+                        <div className="absolute inset-0 rounded-full bg-[#27376a] opacity-55 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
+                        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-[#50649f] bg-[#18213a] text-[#b9c6ff] shadow-[0_0_34px_-8px_rgba(99,102,241,0.75)]">
+                          <Icon d={I.folder} className="h-7 w-7" />
                         </div>
                       </div>
                       <div className="text-center">
-                        <p className="text-base font-semibold text-white">{t.dropTitle}</p>
-                        <p className="mt-1 text-[13px] text-[#8b93a8]">{t.dropSub}</p>
+                        <p className="text-lg font-black text-white">{t.dropTitle}</p>
+                        <p className="mt-1 text-[13px] font-semibold text-[#aab4d3]">{t.dropSub}</p>
                       </div>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           inputRef.current?.click();
                         }}
-                        className="neon-btn shine rounded-xl px-5 py-2 text-sm font-semibold text-white"
+                        className="neon-btn shine rounded-xl px-6 py-2.5 text-sm font-bold text-white"
                       >
                         {t.chooseFile}
                       </button>
@@ -481,8 +474,8 @@ export default function Tool({
                             background: disabled
                               ? 'rgba(255,255,255,0.14)'
                               : stable
-                              ? stableGrad
-                              : experimentalGrad,
+                              ? stableColor
+                              : experimentalColor,
                             opacity: active ? 1 : 0.6,
                             boxShadow: active
                               ? stable
@@ -623,7 +616,7 @@ export default function Tool({
                     : 'Structured rebuild with on-device processing'}
                 </p>
               </div>
-              <div className="hidden h-px flex-1 bg-gradient-to-r from-white/[0.12] via-white/[0.04] to-transparent sm:block" />
+              <div className="hidden h-px flex-1 bg-[#242b3f] sm:block" />
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <Feature
@@ -658,6 +651,33 @@ export default function Tool({
 /* ============================================================
    小部件
 ============================================================ */
+function HeroTitle({ locale }: { locale: Locale }) {
+  if (locale === 'zh') {
+    return (
+      <h1 className="mt-4 text-[38px] font-black leading-[1.04] text-white sm:text-[54px]">
+        <span className="text-white text-glow">降级 </span>
+        <span className="text-[#8ea2ff] text-glow">After Effects</span>
+        <span className="text-white text-glow"> 工程</span>
+        <br />
+        <span className="text-white/90">让</span>
+        <span className="text-[#67e8f9]">旧版本</span>
+        <span className="text-white/90">也能打开</span>
+      </h1>
+    );
+  }
+
+  return (
+    <h1 className="mt-4 text-[38px] font-black leading-[1.04] text-white sm:text-[54px]">
+      <span className="text-white text-glow">Downgrade </span>
+      <span className="text-[#8ea2ff] text-glow">After Effects</span>
+      <span className="text-white text-glow"> Projects</span>
+      <br />
+      <span className="text-white/90">Open them in </span>
+      <span className="text-[#67e8f9]">older versions</span>
+    </h1>
+  );
+}
+
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="metric-tile rounded-2xl px-4 py-3">
@@ -697,7 +717,7 @@ function ProgressStepper({
       <div className="flex items-center gap-3 sm:hidden">
         <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-indigo-300 via-cyan-200 to-emerald-300 transition-all duration-500"
+            className="h-full rounded-full bg-[#5b6ee1] transition-all duration-500"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -768,7 +788,7 @@ function StepLabel({ n, title }: { n: string; title: string }) {
         {n}
       </span>
       <h2 className="text-sm font-bold uppercase text-white/90">{title}</h2>
-      <div className="h-px flex-1 bg-gradient-to-r from-white/[0.15] to-transparent" />
+      <div className="h-px flex-1 bg-[#242b3f]" />
     </div>
   );
 }

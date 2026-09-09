@@ -32,11 +32,11 @@ export function buildMetadata(locale: Locale): Metadata {
     manifest: '/manifest.webmanifest',
     icons: {
       icon: [
-        { url: '/icon.svg', type: 'image/svg+xml' },
+        { url: '/logo_icon.png', type: 'image/png' },
         { url: '/favicon.ico', sizes: 'any' },
       ],
       apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
-      shortcut: ['/icon.svg'],
+      shortcut: ['/favicon.ico'],
     },
     alternates: {
       canonical: localeHref[locale],

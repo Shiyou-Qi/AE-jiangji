@@ -5,6 +5,8 @@ Allow: /
 Allow: /wasm/
 Allow: /_next/
 Allow: /icon.svg
+Allow: /logo_icon.png
+Allow: /logo-512.png
 Allow: /og-zh.png
 Allow: /og-en.png
 

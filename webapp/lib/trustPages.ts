@@ -62,7 +62,7 @@ export const trustPages: TrustPage[] = [
       {
         title: '联系方式',
         body: [
-          '如果你对隐私、数据处理或文件安全有疑问，可以通过 GitHub 仓库联系作者。',
+          '如果你对隐私、数据处理或文件安全有疑问，可以通过邮箱联系作者：beishan9688@gmail.com',
         ],
       },
     ],
@@ -181,13 +181,13 @@ export const trustPages: TrustPage[] = [
       '联系 Qi AEP 降级器作者，反馈 AEP 降级问题、兼容性错误、隐私疑问或网站改进建议。',
     h1: '联系我们',
     intro:
-      '如果你遇到转换失败、版本识别异常、页面问题或隐私相关疑问，可以通过 GitHub 仓库提交反馈。',
+      '如果你遇到转换失败、版本识别异常、页面问题或隐私相关疑问，可以通过邮箱提交反馈。',
     updatedAt: '2026-09-08',
     sections: [
       {
         title: '反馈渠道',
         body: [
-          'GitHub 仓库：https://github.com/ShiyouQi888/AE-jiangji',
+          '邮箱：beishan9688@gmail.com',
           '提交问题时请尽量说明源 AE 版本、目标 AE 版本、浏览器版本和错误提示。',
         ],
       },
@@ -241,7 +241,7 @@ export const trustPages: TrustPage[] = [
       {
         title: 'Contact',
         body: [
-          'For privacy, data handling or file safety questions, contact the author through the GitHub repository.',
+          'For privacy, data handling or file safety questions, contact the author by email: beishan9688@gmail.com',
         ],
       },
     ],
@@ -360,13 +360,13 @@ export const trustPages: TrustPage[] = [
       'Contact Qi AEP Downgrader for AEP downgrade issues, compatibility errors, privacy questions and website feedback.',
     h1: 'Contact',
     intro:
-      'If conversion fails, version detection looks wrong, a page breaks or you have a privacy question, use the GitHub repository to reach the author.',
+      'If conversion fails, version detection looks wrong, a page breaks or you have a privacy question, contact the author by email.',
     updatedAt: '2026-09-08',
     sections: [
       {
         title: 'Feedback channel',
         body: [
-          'GitHub repository: https://github.com/ShiyouQi888/AE-jiangji',
+          'Email: beishan9688@gmail.com',
           'When reporting an issue, include the source AE version, target AE version, browser version and visible error message when possible.',
         ],
       },

@@ -78,7 +78,7 @@ export default function SearchLandingPage({ page }: SearchLandingPageProps) {
       lang={page.locale === 'zh' ? 'zh-CN' : 'en'}
     >
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_45%_at_50%_-10%,rgba(56,79,182,0.22),transparent_68%)]" />
+        <div className="absolute inset-0 bg-[#070912]" />
         <div className="absolute inset-0 bg-grid" />
       </div>
 
@@ -156,7 +156,7 @@ export default function SearchLandingPage({ page }: SearchLandingPageProps) {
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {relatedPages.map((item) => (
               <Link
-                className="rounded-xl border border-white/[0.1] bg-white/[0.035] px-3 py-2 text-[12px] font-semibold leading-5 text-[#c3c9e2] transition hover:border-indigo-300/40 hover:text-white"
+                className="rounded-xl border border-[#242b3f] bg-[#12182a] px-3 py-2 text-[12px] font-semibold leading-5 text-[#c3c9e2] transition hover:border-indigo-300/40 hover:text-white"
                 href={landingPath(item)}
                 key={item.slug}
               >

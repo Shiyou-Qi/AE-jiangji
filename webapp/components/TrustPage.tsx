@@ -43,9 +43,8 @@ export default function TrustPage({ page }: { page: TrustPageData }) {
       lang={page.locale === 'zh' ? 'zh-CN' : 'en'}
     >
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="premium-mesh absolute inset-0" />
+        <div className="absolute inset-0 bg-[#070912]" />
         <div className="absolute inset-0 bg-grid" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_45%_at_50%_-10%,rgba(56,79,182,0.2),transparent_70%)]" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[860px]">
@@ -90,11 +89,11 @@ export default function TrustPage({ page }: { page: TrustPageData }) {
               <h2 className="text-lg font-bold tracking-tight text-white">{section.title}</h2>
               <div className="mt-3 space-y-3">
                 {section.body.map((paragraph) =>
-                  paragraph.startsWith('GitHub repository:') || paragraph.startsWith('GitHub 仓库：') ? (
+                  paragraph.startsWith('Email:') || paragraph.startsWith('邮箱：') ? (
                     <p className="text-[13.5px] leading-7 text-[#9aa1b6]" key={paragraph}>
                       {paragraph.split('：')[0].split(':')[0]}:{' '}
-                      <a className="text-indigo-200 transition hover:text-white" href="https://github.com/ShiyouQi888/AE-jiangji">
-                        https://github.com/ShiyouQi888/AE-jiangji
+                      <a className="text-indigo-200 transition hover:text-white" href="mailto:beishan9688@gmail.com">
+                        beishan9688@gmail.com
                       </a>
                     </p>
                   ) : (
@@ -115,7 +114,7 @@ export default function TrustPage({ page }: { page: TrustPageData }) {
           <div className="mt-4 flex flex-wrap gap-2">
             {allTrustPages.map((item) => (
               <Link
-                className="rounded-full border border-white/[0.1] bg-white/[0.04] px-3 py-1.5 text-[12px] font-semibold text-[#c3c9e2] transition hover:border-indigo-300/40 hover:text-white"
+                className="rounded-full border border-[#242b3f] bg-[#12182a] px-3 py-1.5 text-[12px] font-semibold text-[#c3c9e2] transition hover:border-indigo-300/40 hover:text-white"
                 href={trustPath(item)}
                 key={item.key}
               >

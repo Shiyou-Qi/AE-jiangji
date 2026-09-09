@@ -7,9 +7,7 @@ export default function NotFoundPage({ locale }: { locale: Locale }) {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#05060a] px-6 text-[#f1f3f9]">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_-5%,rgba(56,79,182,0.22),transparent_70%)]" />
-        <div className="absolute -top-40 -left-40 h-[420px] w-[420px] aurora-blob aurora-a" />
-        <div className="absolute top-[8%] -right-52 h-[460px] w-[460px] aurora-blob aurora-b" />
+        <div className="absolute inset-0 bg-[#070912]" />
         <div className="absolute inset-0 bg-grid" />
       </div>
 

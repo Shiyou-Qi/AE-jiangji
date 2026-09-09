@@ -11,8 +11,9 @@
   "theme_color": "#05060a",
   "categories": ["utilities", "productivity", "multimedia"],
   "icons": [
-    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/logo_icon.png", "sizes": "1254x1254", "type": "image/png", "purpose": "any" },
     { "src": "/apple-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
     { "src": "/og-zh.png", "sizes": "1200x630", "type": "image/png", "purpose": "any maskable" }
   ]
 }

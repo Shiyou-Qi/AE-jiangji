@@ -29,7 +29,7 @@ const zh = {
   langSwitchAria: '切换语言为 English',
 
   /* ---------- Hero ---------- */
-  heroTitle1: '降级 AE 工程',
+  heroTitle1: '降级 After Effects 工程',
   heroTitle2: '让旧版本也能打开',
   heroSubBefore: '选择',
   heroSubAfter:
@@ -163,7 +163,7 @@ const en: Dict = {
   langSwitch: '中文',
   langSwitchAria: 'Switch language to Chinese',
 
-  heroTitle1: 'Downgrade AE Projects',
+  heroTitle1: 'Downgrade After Effects Projects',
   heroTitle2: 'Open them in older versions',
   heroSubBefore: 'Pick a',
   heroSubAfter:
