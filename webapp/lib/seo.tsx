@@ -79,6 +79,7 @@ export function buildMetadata(locale: Locale): Metadata {
       },
     },
     other: {
+      'baidu-site-verification': 'codeva-96H7gVKfxF',
       'og:image:alt': s.ogAlt,
       'al:web:url': abs(localeHref[locale]),
       'lang-alt': localeHref[other],
