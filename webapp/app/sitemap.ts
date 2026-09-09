@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
 import { localeHref, locales, type Locale } from '@/lib/i18n';
 import { getLandingPages, landingPath } from '@/lib/landingPages';
+import { getTrustPages, trustPath } from '@/lib/trustPages';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -28,5 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: page.locale === 'zh' ? 0.72 : 0.68,
   }));
 
-  return [...corePages, ...searchPages];
+  const trustPages = getTrustPages().map((page) => ({
+    url: SITE_URL + trustPath(page),
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.42,
+  }));
+
+  return [...corePages, ...searchPages, ...trustPages];
 }

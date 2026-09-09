@@ -31,7 +31,7 @@ const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]
 const uniqueUrls = new Set(urls);
 
 if (urls.length !== uniqueUrls.size) failures.push('sitemap.xml contains duplicate URLs');
-if (urls.length < 29) failures.push(`sitemap.xml should contain at least 29 URLs, found ${urls.length}`);
+if (urls.length < 39) failures.push(`sitemap.xml should contain at least 39 URLs, found ${urls.length}`);
 
 const requiredUrls = [
   `${siteUrl}/`,
@@ -42,6 +42,16 @@ const requiredUrls = [
   `${siteUrl}/en/aep-downgrader/`,
   `${siteUrl}/en/ae-2026-to-2024/`,
   `${siteUrl}/en/aep-downgrade-without-upload/`,
+  `${siteUrl}/privacy/`,
+  `${siteUrl}/terms/`,
+  `${siteUrl}/disclaimer/`,
+  `${siteUrl}/about/`,
+  `${siteUrl}/contact/`,
+  `${siteUrl}/en/privacy/`,
+  `${siteUrl}/en/terms/`,
+  `${siteUrl}/en/disclaimer/`,
+  `${siteUrl}/en/about/`,
+  `${siteUrl}/en/contact/`,
 ];
 
 for (const url of requiredUrls) {
