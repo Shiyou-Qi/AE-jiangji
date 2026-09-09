@@ -19,7 +19,7 @@ Cloudflare Pages 连接 GitHub 时推荐使用以下设置：
 | Root directory | 留空 |
 | Build command | `cd webapp && npm install && npm run build` |
 | Build output directory | `webapp/out` |
-| Environment variable | `NEXT_PUBLIC_SITE_URL=https://你的域名` |
+| Environment variable | `NEXT_PUBLIC_SITE_URL=https://www.aeback.com` |
 
 重要：不要在 Cloudflare 的 Deploy command 里填写 `wrangler deploy`。这个命令用于 Workers，会报：
 
@@ -93,15 +93,15 @@ npx vercel --prod
 
 | 变量 | 默认值 | 说明 |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | `https://aejiangji.vercel.app` | 用于 canonical / hreflang / OG / sitemap 的绝对地址，换域名时必须改 |
+| `NEXT_PUBLIC_SITE_URL` | `https://www.aeback.com` | 用于 canonical / hreflang / OG / sitemap 的绝对地址，换域名时必须改 |
 
 ## 部署后自检
 
 ```bash
-curl -I https://aejiangji.vercel.app/          # 200
-curl -I https://aejiangji.vercel.app/en/      # 200
-curl -I https://aejiangji.vercel.app/sitemap.xml  # 200
-curl -s https://aejiangji.vercel.app/ | grep canonical
+curl -I https://www.aeback.com/          # 200
+curl -I https://www.aeback.com/en/      # 200
+curl -I https://www.aeback.com/sitemap.xml  # 200
+curl -s https://www.aeback.com/ | grep canonical
 ```
 
 预期产物结构（`webapp/out`）：

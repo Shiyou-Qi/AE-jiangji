@@ -12,4 +12,4 @@ Allow: /og-en.png
 
 Disallow: /api/
 
-Sitemap: https://aejiangji.vercel.app/sitemap.xml
+Sitemap: https://www.aeback.com/sitemap.xml

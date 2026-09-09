@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const siteUrl = 'https://aejiangji.vercel.app';
+const siteUrl = 'https://www.aeback.com';
 const outDir = join(process.cwd(), 'out');
 const failures = [];
 
@@ -66,7 +66,7 @@ for (const url of urls) {
   const checks = [
     ['title', /<title>[^<]{8,}<\/title>/],
     ['description', /<meta name="description" content="[^"]{40,}"/],
-    ['canonical', /<link rel="canonical" href="https:\/\/aejiangji\.vercel\.app\//],
+    ['canonical', /<link rel="canonical" href="https:\/\/www\.aeback\.com\//],
     ['index robots', /<meta name="robots" content="index, follow"/],
     ['body heading', /<h1[^>]*>/],
   ];
