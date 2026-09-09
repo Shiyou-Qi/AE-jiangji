@@ -21,6 +21,18 @@ Cloudflare Pages 连接 GitHub 时推荐使用以下设置：
 | Build output directory | `webapp/out` |
 | Environment variable | `NEXT_PUBLIC_SITE_URL=https://你的域名` |
 
+重要：不要在 Cloudflare 的 Deploy command 里填写 `wrangler deploy`。这个命令用于 Workers，会报：
+
+```text
+Missing entry-point to Worker script or to assets directory
+```
+
+如果 Cloudflare 要求填写 Deploy command，请使用 Pages 命令：
+
+```bash
+npx wrangler pages deploy webapp/out --project-name=ae-jiangji
+```
+
 如果把 Cloudflare 的 Root directory 设置为 `webapp`，则对应改为：
 
 | 项 | 值 |
@@ -28,6 +40,12 @@ Cloudflare Pages 连接 GitHub 时推荐使用以下设置：
 | Root directory | `webapp` |
 | Build command | `npm install && npm run build` |
 | Build output directory | `out` |
+
+这种情况下 Deploy command 应写：
+
+```bash
+npx wrangler pages deploy out --project-name=ae-jiangji
+```
 
 不要把输出目录留空，否则 Wrangler 无法自动判断 Next 静态导出的 `out` 目录。
 
