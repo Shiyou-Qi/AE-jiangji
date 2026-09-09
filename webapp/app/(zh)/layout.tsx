@@ -18,6 +18,13 @@ export default function ZhLayout({
 }) {
   return (
     <html lang="zh-CN">
+      <head>
+        <script
+          async
+          crossOrigin="anonymous"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6661674805945311"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
