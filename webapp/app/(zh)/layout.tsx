@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import '../globals.css';
 import { buildMetadata } from '@/lib/seo';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = buildMetadata('zh');
 
@@ -25,7 +26,10 @@ export default function ZhLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6661674805945311"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
