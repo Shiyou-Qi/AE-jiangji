@@ -30,9 +30,9 @@ export const trustPages: TrustPage[] = [
   {
     key: 'privacy',
     locale: 'zh',
-    title: '隐私政策 - Qi AEP 降级器',
+    title: '隐私政策 - AEBack AEP 降级器文件本地处理说明',
     description:
-      'Qi AEP 降级器隐私政策：说明 AEP 文件本地处理、不上传、基础访问日志、第三方服务和未来广告 Cookie 的处理方式。',
+      'AEBack AEP 降级器隐私政策：说明 AEP 文件本地处理、不上传、基础访问日志、Google AdSense 和第三方服务 Cookie 的处理方式。',
     h1: '隐私政策',
     intro:
       '我们把隐私作为这个工具的核心设计目标。AEP 工程可能包含客户信息、素材路径和未公开项目内容，因此转换过程默认在浏览器本地完成。',
@@ -55,7 +55,7 @@ export const trustPages: TrustPage[] = [
       {
         title: '第三方服务和广告',
         body: [
-          '如果未来启用 Google AdSense 或分析服务，第三方服务可能使用 Cookie 或类似技术展示广告、衡量访问和防止滥用。',
+          '本站已接入 Google AdSense。Google 或第三方服务可能使用 Cookie 或类似技术展示广告、衡量访问和防止滥用。',
           '我们会尽量保持页面透明，并避免把工程文件内容传递给广告或分析服务。',
         ],
       },
@@ -70,9 +70,9 @@ export const trustPages: TrustPage[] = [
   {
     key: 'terms',
     locale: 'zh',
-    title: '使用条款 - Qi AEP 降级器',
+    title: '使用条款 - AEBack AEP 降级器兼容转换规则',
     description:
-      'Qi AEP 降级器使用条款：说明工具用途、用户责任、兼容性限制、禁止用途和免责声明。',
+      'AEBack AEP 降级器使用条款：说明工具用途、用户责任、兼容性限制、禁止用途、Adobe 非官方关联和转换前备份建议。',
     h1: '使用条款',
     intro:
       '使用本站即表示你理解并接受以下条款。这个工具面向合法的 After Effects 工程兼容和协作交付场景。',
@@ -110,9 +110,9 @@ export const trustPages: TrustPage[] = [
   {
     key: 'disclaimer',
     locale: 'zh',
-    title: '免责声明 - Qi AEP 降级器',
+    title: '免责声明 - AEBack 与 Adobe 非官方关联说明',
     description:
-      'Qi AEP 降级器免责声明：本站为独立工具，与 Adobe 无关联，不保证所有 AEP 工程降级结果。',
+      'AEBack 免责声明：本站为独立 AEP 降级工具，与 Adobe 无关联，不保证所有 After Effects 工程都能完整降级或保持视觉一致。',
     h1: '免责声明',
     intro:
       '本站是独立开发的浏览器工具，目的是帮助用户处理自己工程文件的版本兼容问题。请在使用前理解以下说明。',
@@ -144,12 +144,12 @@ export const trustPages: TrustPage[] = [
   {
     key: 'about',
     locale: 'zh',
-    title: '关于本站 - Qi AEP 降级器',
+    title: '关于 AEBack - AEP 降级工具与本地转换说明',
     description:
-      '了解 Qi AEP 降级器：一个面向 After Effects 工程兼容和 AEP 本地降级的独立网页工具。',
+      '了解 AEBack：一个面向 After Effects 工程兼容、AEP 本地降级、旧版 AE 打开高版本项目的独立网页工具。',
     h1: '关于本站',
     intro:
-      'Qi AEP 降级器是一个专注于 After Effects 工程版本兼容的小型工具站。它把“能不能用旧版 AE 打开工程”这个高频协作问题，做成一个尽量直接、安全、可搜索的网页工具。',
+      'AEBack 是一个专注于 After Effects 工程版本兼容的小型工具站。它把“能不能用旧版 AE 打开工程”这个高频协作问题，做成一个尽量直接、安全、可搜索的网页工具。',
     updatedAt: '2026-09-08',
     sections: [
       {
@@ -176,9 +176,9 @@ export const trustPages: TrustPage[] = [
   {
     key: 'contact',
     locale: 'zh',
-    title: '联系我们 - Qi AEP 降级器',
+    title: '联系 AEBack - AEP 降级反馈与兼容问题支持',
     description:
-      '联系 Qi AEP 降级器作者，反馈 AEP 降级问题、兼容性错误、隐私疑问或网站改进建议。',
+      '联系 AEBack 作者，反馈 AEP 降级失败、After Effects 版本识别异常、页面问题、隐私疑问或 SEO 内容改进建议。',
     h1: '联系我们',
     intro:
       '如果你遇到转换失败、版本识别异常、页面问题或隐私相关疑问，可以通过邮箱提交反馈。',
@@ -209,9 +209,9 @@ export const trustPages: TrustPage[] = [
   {
     key: 'privacy',
     locale: 'en',
-    title: 'Privacy Policy - Qi AEP Downgrader',
+    title: 'Privacy Policy - AEBack AEP Downgrader',
     description:
-      'Privacy Policy for Qi AEP Downgrader: local AEP processing, no file upload, basic logs, third-party services and future advertising cookies.',
+      'Privacy Policy for AEBack AEP Downgrader: local AEP processing, no file upload, basic logs, Google AdSense and third-party cookies.',
     h1: 'Privacy Policy',
     intro:
       'Privacy is part of the product design. AEP projects can include client names, footage paths and unreleased work, so conversion is designed to run locally in your browser.',
@@ -234,7 +234,7 @@ export const trustPages: TrustPage[] = [
       {
         title: 'Third-party services and ads',
         body: [
-          'If Google AdSense or analytics services are enabled in the future, those services may use cookies or similar technologies for ads, measurement and abuse prevention.',
+          'Google AdSense is enabled on this site. Google or third-party services may use cookies or similar technologies for ads, measurement and abuse prevention.',
           'Project file contents are not intentionally shared with advertising or analytics services.',
         ],
       },
@@ -249,9 +249,9 @@ export const trustPages: TrustPage[] = [
   {
     key: 'terms',
     locale: 'en',
-    title: 'Terms of Use - Qi AEP Downgrader',
+    title: 'Terms of Use - AEBack AEP Downgrader',
     description:
-      'Terms of Use for Qi AEP Downgrader: tool purpose, user responsibility, compatibility limits, prohibited uses and disclaimers.',
+      'Terms of Use for AEBack AEP Downgrader: tool purpose, user responsibility, compatibility limits, prohibited uses, backup advice and disclaimers.',
     h1: 'Terms of Use',
     intro:
       'By using this website, you acknowledge these terms. The tool is intended for legitimate After Effects project compatibility and collaboration workflows.',
@@ -289,9 +289,9 @@ export const trustPages: TrustPage[] = [
   {
     key: 'disclaimer',
     locale: 'en',
-    title: 'Disclaimer - Qi AEP Downgrader',
+    title: 'Disclaimer - AEBack AEP Downgrader',
     description:
-      'Disclaimer for Qi AEP Downgrader: independent tool, not affiliated with Adobe, and no guarantee for every AEP downgrade result.',
+      'Disclaimer for AEBack AEP Downgrader: independent tool, not affiliated with Adobe, and no guarantee for every After Effects project downgrade result.',
     h1: 'Disclaimer',
     intro:
       'This website is an independently developed browser tool for project compatibility workflows. Please read these notes before relying on conversion results.',
@@ -323,12 +323,12 @@ export const trustPages: TrustPage[] = [
   {
     key: 'about',
     locale: 'en',
-    title: 'About - Qi AEP Downgrader',
+    title: 'About AEBack - AEP Downgrader',
     description:
-      'About Qi AEP Downgrader, an independent web tool for After Effects project compatibility and local AEP downgrading.',
+      'About AEBack, an independent web tool for After Effects project compatibility, local AEP downgrading and older AE workflows.',
     h1: 'About This Site',
     intro:
-      'Qi AEP Downgrader is a focused tool site for After Effects project compatibility. It turns a common production problem into a direct, privacy-aware browser workflow.',
+      'AEBack is a focused tool site for After Effects project compatibility. It turns a common production problem into a direct, privacy-aware browser workflow.',
     updatedAt: '2026-09-08',
     sections: [
       {
@@ -355,9 +355,9 @@ export const trustPages: TrustPage[] = [
   {
     key: 'contact',
     locale: 'en',
-    title: 'Contact - Qi AEP Downgrader',
+    title: 'Contact AEBack - AEP Downgrade Support',
     description:
-      'Contact Qi AEP Downgrader for AEP downgrade issues, compatibility errors, privacy questions and website feedback.',
+      'Contact AEBack for AEP downgrade failures, After Effects version detection issues, compatibility errors, privacy questions and website feedback.',
     h1: 'Contact',
     intro:
       'If conversion fails, version detection looks wrong, a page breaks or you have a privacy question, contact the author by email.',
@@ -401,10 +401,15 @@ export function getTrustPages(locale?: Locale) {
 
 export function buildTrustMetadata(page: TrustPage): Metadata {
   const path = trustPath(page);
+  const keywords =
+    page.locale === 'zh'
+      ? ['AEBack', 'AEPBack', 'AEP降级', page.h1, 'After Effects工程兼容']
+      : ['AEBack', 'AEPBack', 'AEP downgrader', page.h1, 'After Effects compatibility'];
 
   return {
     title: page.title,
     description: page.description,
+    keywords,
     alternates: {
       canonical: path,
       languages: {

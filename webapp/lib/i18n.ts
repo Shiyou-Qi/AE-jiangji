@@ -22,8 +22,8 @@ export const localeLabel: Record<Locale, string> = {
 
 const zh = {
   /* ---------- 品牌 ---------- */
-  brand: 'Qi AEP 降级器',
-  brandShort: 'AEP 降级器',
+  brand: 'AEBack After Effects 降级工具',
+  brandShort: 'AEBack',
   badge: 'AEP 降级引擎 · 本地处理',
   langSwitch: 'English',
   langSwitchAria: '切换语言为 English',
@@ -151,14 +151,14 @@ const zh = {
   footerPrivacy: '100% 本地处理 · 无上传 · 无水印 · 免费使用',
   seoIntroTitle: '在线 AEP 降级工具',
   seoIntroBody:
-    'Qi AEP 降级器是一款免费、免安装的 After Effects 工程降级工具，可在浏览器内把高版本 .aep 工程转换为 AE 2018 - AE 2026 可打开的格式。相比只修改版本字节的做法，本工具通过结构化重建 RIFX 容器与完整版本签名替换，避免转换后工程损坏或打开报错的问题，适用于团队协作、素材交接、旧机器兼容等场景。',
+    'AEBack 是一款免费、免安装的 After Effects 工程降级工具，可在浏览器内把高版本 .aep 工程转换为 AE 2018 - AE 2026 可打开的格式。相比只修改版本字节的做法，本工具通过结构化重建 RIFX 容器与完整版本签名替换，避免转换后工程损坏或打开报错的问题，适用于团队协作、素材交接、旧机器兼容等场景。',
 };
 
 type Dict = typeof zh;
 
 const en: Dict = {
-  brand: 'Qi AEP Downgrader',
-  brandShort: 'AEP Downgrader',
+  brand: 'AEBack After Effects Downgrade Tool',
+  brandShort: 'AEBack',
   badge: 'AEP Downgrade Engine · 100% Local',
   langSwitch: '中文',
   langSwitchAria: 'Switch language to Chinese',
@@ -276,7 +276,7 @@ const en: Dict = {
   footerPrivacy: '100% local · no upload · no watermark · free to use',
   seoIntroTitle: 'Free online AEP downgrader',
   seoIntroBody:
-    'Qi AEP Downgrader is a free, install-free After Effects project downgrader that converts high-version .aep files into formats openable by AE 2018 - AE 2026, right inside your browser. Instead of patching a single version byte, it rebuilds the RIFX container structurally and replaces the complete version signature table, avoiding corrupted projects and “cannot open file” errors after conversion. Ideal for team collaboration, asset hand-off and working on older machines.',
+    'AEBack is a free, install-free After Effects project downgrader that converts high-version .aep files into formats openable by AE 2018 - AE 2026, right inside your browser. Instead of patching a single version byte, it rebuilds the RIFX container structurally and replaces the complete version signature table, avoiding corrupted projects and “cannot open file” errors after conversion. Ideal for team collaboration, asset hand-off and working on older machines.',
 };
 
 export const dict: Record<Locale, Dict> = { zh, en };
@@ -302,13 +302,18 @@ export const seo: Record<
   }
 > = {
   zh: {
-    title: 'AE 工程降级工具 - AEP 在线降级转换（免费 / 本地处理）',
+    title: 'AEBack - AEP 降级工具，After Effects 工程在线降版本',
     description:
-      '免费在线把 Adobe After Effects 高版本 .aep 工程降级到 AE 2018 - AE 2026。结构化重建 RIFX 容器与版本签名，转换后不再报错；全程浏览器本地处理，文件不上传。',
+      'AEBack 免费在线降级 Adobe After Effects .aep 工程，支持 AE 2018-2026 目标版本。结构化重建 RIFX 容器，本地处理不上传，适合旧版 AE 打开高版本项目。',
     keywords: [
+      'AEBack',
+      'AEPBack',
+      'AEBack降级工具',
       'AE工程降级',
       'AEP降级',
       'AEP转换器',
+      'After Effects降级工具',
+      'AE高版本转低版本',
       'After Effects 低版本打开',
       'aep 文件打不开',
       'AE 版本转换',
@@ -316,24 +321,29 @@ export const seo: Record<
       'After Effects project downgrader',
     ],
     ogImage: '/og-zh.png',
-    ogAlt: 'Qi AEP 降级器 —— 浏览器本地降级 After Effects 工程',
-    siteName: 'Qi AEP 降级器',
+    ogAlt: 'AEBack —— 浏览器本地降级 After Effects 工程',
+    siteName: 'AEBack AEP 降级器',
   },
   en: {
-    title: 'AEP Downgrader — Downgrade After Effects Projects Online (Free)',
+    title: 'AEBack AEP Downgrader - Downgrade After Effects Projects',
     description:
-      'Free online tool to downgrade Adobe After Effects .aep projects to AE 2018 - AE 2026. Structured RIFX rebuild and full version-signature replacement, 100% local in-browser processing with no upload.',
+      'AEBack downgrades Adobe After Effects .aep projects to older AE versions with local browser processing, no upload and structured RIFX rebuild.',
     keywords: [
+      'AEBack',
+      'AEBack downgrader',
+      'AEPBack',
+      'AE Back',
       'aep downgrader',
       'downgrade after effects project',
       'aep converter',
+      'After Effects downgrade tool',
       'open aep in older version',
       'after effects version converter',
       'aep file cannot be opened',
       'after effects downgrade online',
     ],
     ogImage: '/og-en.png',
-    ogAlt: 'Qi AEP Downgrader — downgrade After Effects projects locally in your browser',
-    siteName: 'Qi AEP Downgrader',
+    ogAlt: 'AEBack — downgrade After Effects projects locally in your browser',
+    siteName: 'AEBack AEP Downgrader',
   },
 };

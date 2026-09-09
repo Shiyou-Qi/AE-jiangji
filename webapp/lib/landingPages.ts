@@ -57,7 +57,7 @@ const coreLandingPages: LandingPage[] = [
         a: '当前工具面向 .aep 二进制工程，不处理 .aepx XML 工程。',
       },
     ],
-    keywords: ['AEP降级', 'AE工程降级', 'AEP在线降级', 'After Effects降级'],
+    keywords: ['AEBack', 'AEPBack', 'AEP降级', 'AE工程降级', 'AEP在线降级', 'After Effects降级'],
   },
   {
     slug: 'ae-gongcheng-jiangji',
@@ -171,7 +171,7 @@ const coreLandingPages: LandingPage[] = [
         a: 'No. The tool is focused on binary .aep project files.',
       },
     ],
-    keywords: ['aep downgrader', 'aep converter', 'after effects downgrade online'],
+    keywords: ['AEBack', 'AEBack downgrader', 'AEPBack', 'aep downgrader', 'aep converter', 'after effects downgrade online'],
   },
   {
     slug: 'downgrade-after-effects-project',
@@ -248,6 +248,93 @@ const coreLandingPages: LandingPage[] = [
       },
     ],
     keywords: ['open aep in older version', 'aep file cannot be opened', 'after effects older version'],
+  },
+];
+
+const brandLandingPages: LandingPage[] = [
+  {
+    slug: 'aeback',
+    locale: 'zh',
+    title: 'AEBack - AEP 降级工具与 After Effects 版本转换',
+    description:
+      'AEBack 是面向 After Effects 工程兼容的在线 AEP 降级工具，支持本地处理高版本 .aep 文件，生成旧版 AE 可尝试打开的副本。',
+    h1: 'AEBack AEP 降级工具',
+    intro:
+      'AEBack 面向需要把高版本 After Effects 工程交给旧版 AE 打开的用户。页面聚焦“AEP 降级”“AE 高版本转低版本”“After Effects 工程版本转换”等搜索需求，并提供不上传文件的浏览器本地转换入口。',
+    sections: [
+      {
+        title: 'AEBack 解决什么问题',
+        body:
+          '在团队协作、客户交付和旧机器剪辑环境里，最常见的问题是高版本 AE 保存的 .aep 工程无法被旧版本打开。AEBack 会读取工程结构并生成目标版本副本，让旧版 After Effects 有机会识别工程。',
+      },
+      {
+        title: '为什么强调本地处理',
+        body:
+          'AEP 工程可能包含客户名称、素材路径、字幕内容、插件使用情况和未发布项目信息。AEBack 的转换逻辑在浏览器内存中运行，工程文件不需要上传到服务器。',
+      },
+      {
+        title: '适合收藏的品牌入口',
+        body:
+          '如果你经常需要处理 AEP 降级、AE 版本不兼容或旧版 AE 打不开高版本工程，可以把 AEBack 作为固定入口。站内还提供具体版本组合页面和问题排查页面，方便按场景快速进入。',
+      },
+    ],
+    faq: [
+      {
+        q: 'AEBack 和 AEPBack 是同一个工具吗？',
+        a: 'AEBack 是本站当前使用的品牌名，AEPBack 可以理解为围绕 AEP 文件降级场景的搜索别名，二者都指向这个 After Effects 工程降级工具。',
+      },
+      {
+        q: 'AEBack 会上传我的 AEP 工程吗？',
+        a: '不会。转换过程在浏览器本地内存中完成，文件不会离开你的设备。',
+      },
+      {
+        q: 'AEBack 能替代 Adobe 官方另存低版本吗？',
+        a: '如果你能打开新版 AE，官方另存低版本仍然优先。AEBack 更适合没有新版 AE、需要快速尝试生成兼容副本的场景。',
+      },
+    ],
+    keywords: ['AEBack', 'AEPBack', 'AEBack降级工具', 'AEP降级', 'After Effects降级工具'],
+  },
+  {
+    slug: 'aeback-downgrader',
+    locale: 'en',
+    title: 'AEBack - AEP Downgrader for After Effects Projects',
+    description:
+      'AEBack is a browser-based AEP downgrader for After Effects projects. Convert newer .aep files toward older AE versions with local processing and no upload.',
+    h1: 'AEBack AEP Downgrader',
+    intro:
+      'AEBack is built for editors, motion designers and collaborators who need to open newer After Effects projects on older AE workstations. It targets searches around AEP downgrade, AE version conversion and private browser-based project processing.',
+    sections: [
+      {
+        title: 'What AEBack is for',
+        body:
+          'A newer After Effects project can be rejected before an older AE version loads any comps or layers. AEBack reads the project structure and creates a target-version copy so the older version has a better chance of opening it.',
+      },
+      {
+        title: 'Why local conversion matters',
+        body:
+          'AEP files can expose client names, footage paths, text layers, plugin usage and unreleased production details. AEBack processes the file in browser memory instead of uploading the project to a remote converter.',
+      },
+      {
+        title: 'A clear brand entry for search',
+        body:
+          'Use this page as the main AEBack entry when searching for AEBack downgrader, AEPBack, AE Back or After Effects downgrade tool. Related pages cover specific version pairs and common error messages.',
+      },
+    ],
+    faq: [
+      {
+        q: 'Are AEBack and AEPBack the same tool?',
+        a: 'AEBack is the current brand name for this site. AEPBack is treated as a search alias around the same AEP downgrade workflow.',
+      },
+      {
+        q: 'Does AEBack upload my project?',
+        a: 'No. The converter runs locally in browser memory and does not upload the .aep file.',
+      },
+      {
+        q: 'Can AEBack replace official Adobe save-down?',
+        a: 'Official save-down is best when newer AE is available. AEBack is useful when you do not have that newer AE version and need a testable older-version copy.',
+      },
+    ],
+    keywords: ['AEBack', 'AEBack downgrader', 'AEPBack', 'AE Back', 'After Effects downgrade tool'],
   },
 ];
 
@@ -344,7 +431,7 @@ const zhProblemLandingPages: LandingPage[] = [
     locale: 'zh',
     title: 'AE 工程版本错误 - After Effects 项目不兼容处理',
     description:
-      '遇到 AE 工程版本错误或项目不兼容提示时，了解原因、备份方法和 AEP 降级处理流程。',
+      '遇到 AE 工程版本错误、项目由更新版本创建或旧版 After Effects 无法打开提示时，了解原因、备份方法和 AEP 降级处理流程。',
     h1: 'AE 工程版本错误',
     intro:
       'AE 工程版本错误往往出现在团队交付最后一步：文件能下载，但旧版 AE 打不开。这个页面把版本错误的原因和处理流程拆开，方便快速定位。',
@@ -620,6 +707,7 @@ const enProblemLandingPages: LandingPage[] = [
 ];
 
 export const landingPages: LandingPage[] = [
+  ...brandLandingPages,
   ...coreLandingPages,
   ...zhVersionLandingPages,
   ...zhProblemLandingPages,
