@@ -1,0 +1,32 @@
+{
+  "name": "aeback-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "aeback 官网 —— Premiere Pro / After Effects 工程降级服务",
+  "scripts": {
+    "dev": "next dev -H 127.0.0.1 -p 3100",
+    "build": "next build",
+    "start": "next start -H 127.0.0.1 -p 3100",
+    "test": "node test/e2e.js",
+    "test:ae": "node test/aep-core.test.mjs",
+    "test:browser": "node test/browser-flow.js",
+    "test:browser:ae": "node test/browser-flow-ae.js",
+    "test:layout": "node test/layout-audit.js",
+    "test:align": "node test/faq-align.mjs",
+    "test:content": "node test/content-shape.mjs",
+    "test:copy": "node test/copy-audit.mjs",
+    "test:noleak": "node test/no-leak.mjs",
+    "test:flat": "node test/no-gradient.mjs",
+    "test:seo": "node test/seo.mjs",
+    "test:all": "npm run test:content && npm run test:copy && npm run test:noleak && npm run test:flat && npm run test:seo && npm run test:ae && npm run test && npm run test:browser && npm run test:browser:ae && npm run test:layout && npm run test:align",
+    "assets": "python test/assets.py",
+    "shots": "node test/shots.js"
+  },
+  "dependencies": {
+    "next": "^16.3.4",
+    "nodemailer": "^10.0.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}
