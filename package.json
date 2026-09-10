@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "aeback 官网 —— Premiere Pro / After Effects 工程降级服务",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev -H 127.0.0.1 -p 3100",
     "build": "next build",

@@ -6,3 +6,5 @@ out/
 _npmcache/
 *.log
 .DS_Store
+
+.vercel
