@@ -1,5 +1,6 @@
 import '@/app/globals.css';
 
+import { Analytics } from '@vercel/analytics/next';
 import RevealScript from '@/components/RevealScript';
 import SiteFooter from '@/components/SiteFooter';
 import SiteHeader from '@/components/SiteHeader';
@@ -50,6 +51,7 @@ export default async function LangLayout({ children, params }) {
         <main>{children}</main>
         <SiteFooter lang={lang} dict={dict.footer} />
         <RevealScript />
+        <Analytics />
       </body>
     </html>
   );
