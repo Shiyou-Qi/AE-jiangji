@@ -8,15 +8,12 @@
  *
  * 流程：
  *   POST /api/convert?target=2021&safe=1   body = 工程字节
- *     → 引擎（meta 模式取回文件本体）
- *     → 结果暂存在内存 → 返回用户需要的少量元信息 + 下载 token
- *   GET  /api/download?token=…             → 取回文件字节（一次性）
+ *     → 引擎取回文件本体
+ *     → 直接返回二进制 .prproj，让浏览器生成 Blob 下载
  *
  * 只向浏览器回传用户真正要看的信息（目标版本、体积、耗时）。
  * 引擎的处理过程与内部字段一律不出服务端。
  */
-
-import { putResult } from './store.js';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -32,6 +29,12 @@ function outputName(inputName, targetKey) {
   const cleaned = (inputName || 'project.prproj').replace(/[\\/:*?"<>|]/g, '_').slice(0, 120);
   const base = cleaned.replace(/\.prproj$/i, '') || 'project';
   return `${base}_${String(targetKey).toLowerCase()}.prproj`;
+}
+
+function asciiFallback(name) {
+  const stripped = name.replace(/[^\x20-\x7E]/g, '').replace(/[\s"\\/;]/g, '_');
+  const core = stripped.replace(/^_+|_+$/g, '');
+  return core.length >= 6 ? core : 'downgraded.prproj';
 }
 
 export async function POST(request) {
@@ -80,10 +83,7 @@ export async function POST(request) {
   try {
     data = JSON.parse(text);
   } catch {
-    return Response.json(
-      { ok: false, error: 'Engine returned an unreadable response.' },
-      { status: 502 }
-    );
+    data = { error: text };
   }
 
   if (!upstream.ok || data.ok === false) {
@@ -99,16 +99,22 @@ export async function POST(request) {
     return Response.json({ ok: false, error: 'Engine returned no file.' }, { status: 502 });
   }
 
-  const filename = outputName(inputName, data.target || target);
-  const token = putResult(filename, outBytes);
+  const filename = outputName(inputName, target);
+  const disposition =
+    `attachment; filename="${asciiFallback(filename)}"; ` +
+    `filename*=UTF-8''${encodeURIComponent(filename)}`;
 
-  return Response.json({
-    ok: true,
-    token,
-    filename,
-    target: data.target || target,
-    targetLabel: data.targetLabel || '',
-    inSize: body.length,
-    outSize: outBytes.length,
+  return new Response(outBytes, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/octet-stream',
+      'Content-Length': String(outBytes.length),
+      'Content-Disposition': disposition,
+      'Cache-Control': 'no-store',
+      'x-filename': encodeURIComponent(filename),
+      'x-target': target,
+      'x-input-size': String(body.length),
+      'x-output-size': String(outBytes.length),
+    },
   });
 }

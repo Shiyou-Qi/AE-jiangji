@@ -184,7 +184,7 @@ if (!sample) {
 
   let conv = null;
   try {
-    const { res, text } = await get('/api/convert?target=2023', {
+    const { res, buf, text } = await get('/api/convert?target=2023', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/octet-stream',
@@ -192,50 +192,36 @@ if (!sample) {
       },
       body: src,
     });
-    conv = JSON.parse(text);
     check('转换返回 200', res.status === 200, `HTTP ${res.status} ${text.slice(0, 160)}`);
 
-    if (conv?.ok) {
-      check('返回下载 token', typeof conv.token === 'string' && conv.token.length > 0);
-      check('结果文件名带目标版本', /_2023\.prproj$/i.test(conv.filename), conv.filename);
-      check('不返回日志字段', conv.logs === undefined, JSON.stringify(conv.logs)?.slice(0, 40));
+    if (res.status === 200) {
+      const filename = decodeURIComponent(res.headers.get('x-filename') || '');
+      const outSize = Number(res.headers.get('x-output-size') || 0);
+      conv = { filename, outSize };
+      check('结果文件名带目标版本', /_2023\.prproj$/i.test(filename), filename);
+      check('输出体积合理', buf.length > 0 && buf.length < src.length * 3, `${buf.length} B`);
+      check('响应头字节数与文件一致', outSize === buf.length, `${outSize} vs ${buf.length}`);
       check(
-        '不返回内部结构号',
-        conv.srcSchema === undefined && conv.outSchema === undefined,
-        `srcSchema=${conv.srcSchema} outSchema=${conv.outSchema}`
+        '返回内容为 gzip 工程',
+        buf[0] === 0x1f && buf[1] === 0x8b,
+        `首字节 ${buf[0]?.toString(16)} ${buf[1]?.toString(16)}`
       );
-      check('输出体积合理', conv.outSize > 0 && conv.outSize < src.length * 3, `${conv.outSize} B`);
-
-      // 下载
-      const dl = await get(`/api/download?token=${encodeURIComponent(conv.token)}`);
-      check('下载返回 200', dl.res.status === 200, `HTTP ${dl.res.status}`);
-      check(
-        '下载内容为 gzip 工程',
-        dl.buf[0] === 0x1f && dl.buf[1] === 0x8b,
-        `首字节 ${dl.buf[0]?.toString(16)} ${dl.buf[1]?.toString(16)}`
-      );
-      check('下载字节数与元信息一致', dl.buf.length === conv.outSize, `${dl.buf.length} vs ${conv.outSize}`);
       check(
         'Content-Disposition 带文件名',
-        (dl.res.headers.get('content-disposition') || '').includes('_2023.prproj')
+        (res.headers.get('content-disposition') || '').includes('_2023.prproj')
       );
 
-      // token 是一次性的
-      const again = await get(`/api/download?token=${encodeURIComponent(conv.token)}`);
-      check('token 下载后失效（一次性）', again.res.status === 404, `HTTP ${again.res.status}`);
-
       // 结果能被引擎重新识别 —— 最好的一层校验
-      const { text: reText } = await get('/api/convert?target=2021', {
+      const { res: reRes, buf: reBuf } = await get('/api/convert?target=2021', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/octet-stream',
           'x-file-name': 'roundtrip.prproj',
         },
-        body: dl.buf,
+        body: buf,
       });
-      const re = JSON.parse(reText);
-      check('降级结果可再次作为输入（结构自洽）', re.ok === true, `ok=${re.ok} ${re.error || ''}`);
-      check('二次转换同样不返回内部字段', re.srcSchema === undefined && re.outSchema === undefined);
+      check('降级结果可再次作为输入（结构自洽）', reRes.status === 200, `HTTP ${reRes.status}`);
+      check('二次转换返回文件字节', reBuf.length > 0, `${reBuf.length} B`);
     }
   } catch (err) {
     check('转换链路可跑通', false, String(err.message || err));
@@ -249,17 +235,16 @@ console.log('\n【5】稳健模式');
 if (sample) {
   const src = await readFile(sample);
   try {
-    const { text } = await get('/api/convert?target=CS6&safe=1', {
+    const { res, buf } = await get('/api/convert?target=CS6&safe=1', {
       method: 'POST',
       headers: { 'Content-Type': 'application/octet-stream', 'x-file-name': 'safe.prproj' },
       body: src,
     });
-    const data = JSON.parse(text);
-    check('稳健模式转换 CS6 成功', data.ok === true, data.error || '');
+    check('稳健模式转换 CS6 成功', res.status === 200, `HTTP ${res.status}`);
     check(
       '稳健模式产出明文 XML',
-      typeof data.outSize === 'number' && /^_|safe/.test(data.filename || ''),
-      data.filename
+      buf.includes(Buffer.from('<?xml', 'utf8')),
+      `${buf.length} B`
     );
   } catch (err) {
     check('稳健模式', false, String(err.message || err));

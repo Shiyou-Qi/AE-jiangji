@@ -28,6 +28,7 @@ export default function PrConverter({ ui }) {
 
   const inputRef = useRef(null);
   const timerRef = useRef(null);
+  const downloadUrlRef = useRef(null);
   const startedAt = useRef(0);
 
   /* 版本列表直接问引擎要 —— 站点不自己编一份 */
@@ -51,7 +52,13 @@ export default function PrConverter({ ui }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => () => clearInterval(timerRef.current), []);
+  useEffect(
+    () => () => {
+      clearInterval(timerRef.current);
+      if (downloadUrlRef.current) URL.revokeObjectURL(downloadUrlRef.current);
+    },
+    []
+  );
 
   const accept = useCallback(
     (f) => {
@@ -85,6 +92,10 @@ export default function PrConverter({ ui }) {
 
     setPhase('working');
     setError(null);
+    if (downloadUrlRef.current) {
+      URL.revokeObjectURL(downloadUrlRef.current);
+      downloadUrlRef.current = null;
+    }
     setResult(null);
     startedAt.current = Date.now();
     startTimer();
@@ -102,9 +113,8 @@ export default function PrConverter({ ui }) {
         body: file,
       });
 
-      const data = await res.json().catch(() => null);
-
-      if (!res.ok || !data?.ok) {
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
         clearInterval(timerRef.current);
         setPct(0);
         const code = data?.code;
@@ -119,11 +129,29 @@ export default function PrConverter({ ui }) {
         return;
       }
 
+      const blob = await res.blob();
+      if (!blob.size) {
+        throw new Error('empty download');
+      }
+
       clearInterval(timerRef.current);
       setPct(100);
       setStageIdx(ui.stages.length - 1);
       setElapsed(Date.now() - startedAt.current);
-      setResult(data);
+      const filename =
+        decodeURIComponent(res.headers.get('x-filename') || '') ||
+        `${(file.name || 'project.prproj').replace(/\.prproj$/i, '')}_${target.toLowerCase()}.prproj`;
+      const downloadUrl = URL.createObjectURL(blob);
+      const selectedTarget = status.targets.find((t) => t.key === target);
+      downloadUrlRef.current = downloadUrl;
+      setResult({
+        filename,
+        target: res.headers.get('x-target') || target,
+        targetLabel: selectedTarget?.label || '',
+        inSize: Number(res.headers.get('x-input-size') || file.size),
+        outSize: Number(res.headers.get('x-output-size') || blob.size),
+        downloadUrl,
+      });
       setPhase('done');
     } catch {
       clearInterval(timerRef.current);
@@ -135,6 +163,10 @@ export default function PrConverter({ ui }) {
 
   const reset = () => {
     clearInterval(timerRef.current);
+    if (downloadUrlRef.current) {
+      URL.revokeObjectURL(downloadUrlRef.current);
+      downloadUrlRef.current = null;
+    }
     setFile(null);
     setResult(null);
     setError(null);
@@ -284,7 +316,7 @@ export default function PrConverter({ ui }) {
                 <div className="done__acts">
                   <a
                     className="btn btn--primary"
-                    href={`/api/download?token=${encodeURIComponent(result.token)}`}
+                    href={result.downloadUrl}
                     download={result.filename}
                   >
                     <Download />

@@ -5,7 +5,7 @@
  *   打开转换器页 → 设置文件输入 → 点「开始降级」→ 等到成功卡片 → 读出下载链接
  *
  * 为什么值得单独写：前面 test/e2e.js 验的是接口，接口通了不代表
- * 上传控件的 change 事件、React 状态、下载链接的 token 拼装都通。
+ * 上传控件的 change 事件、React 状态、浏览器 Blob 下载链接都通。
  *
  * 用法：
  *   node src/server/index.js &     # 引擎
@@ -238,7 +238,7 @@ try {
     `);
 
     log(info.file.includes('_2021') || info.download.includes('_2021'), '结果文件名含目标版本', info.file);
-    log(info.href.startsWith('/api/download?token='), '下载链接带 token', info.href.slice(0, 46));
+    log(info.href.startsWith('blob:'), '下载链接是浏览器 Blob URL', info.href.slice(0, 34));
     log(info.logs === 0, '结果页不展示转换日志', `${info.logs} 条`);
     log(
       info.kvs.some(([, v]) => v.includes('Premiere Pro 2021')),
